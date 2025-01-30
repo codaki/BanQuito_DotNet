@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Imagenes\carrito-de-compras.png" />
+    <None Remove="Imagenes\carrito2.png" />
+    <None Remove="Imagenes\cubo-de-basura.png" />
+    <None Remove="Imagenes\fondo.png" />
+    <None Remove="Imagenes\fondo_login.png" />
+    <None Remove="Imagenes\placeholder.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Pruebas\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="System.ServiceModel.Duplex" Version="6.0.*" />
+    <PackageReference Include="System.ServiceModel.Federation" Version="6.0.*" />
+    <PackageReference Include="System.ServiceModel.Http" Version="6.0.*" />
+    <PackageReference Include="System.ServiceModel.NetNamedPipe" Version="6.0.*" />
+    <PackageReference Include="System.ServiceModel.NetTcp" Version="6.0.*" />
+    <PackageReference Include="System.ServiceModel.Security" Version="6.0.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Imagenes\carrito-de-compras.png" />
+    <Resource Include="Imagenes\carrito2.png" />
+    <Resource Include="Imagenes\cubo-de-basura.png" />
+    <Resource Include="Imagenes\fondo.png" />
+    <Resource Include="Imagenes\fondo_login.png" />
+    <Resource Include="Imagenes\placeholder.png" />
+  </ItemGroup>
+
+</Project>

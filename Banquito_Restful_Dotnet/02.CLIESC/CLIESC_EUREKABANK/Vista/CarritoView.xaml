@@ -1,0 +1,64 @@
+﻿<Window x:Class="CLIESC_EUREKABANK.Vista.CarritoView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CLIESC_EUREKABANK.Vista"
+        mc:Ignorable="d"
+        Title="FacturacionView" 
+        Background="#2B2B2B"
+        Height="620" Width="450">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition/>
+            <RowDefinition Height="120"/>
+            <RowDefinition Height="120"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0"
+                   Text="Carrito de Compras"
+                   Foreground="White"
+                   FontSize="20"
+                   HorizontalAlignment="Center"
+                   Margin="0,10"/>
+
+        <ScrollViewer Grid.Row="1" Margin="10">
+            <StackPanel Name="TelefonosContainer" Orientation="Vertical" />
+        </ScrollViewer>
+
+        <Border Grid.Row="2"
+                    BorderBrush="White"
+                    CornerRadius="10"
+                    BorderThickness="2"
+                    Height="60"
+                    Background="#000000"
+                    Margin="30,0"
+                    Name="TarjetaTelefono">
+            <TextBlock Text="Total:"
+                       Name="TotalLabel"
+                       Foreground="White"
+                       FontSize="25"
+                       VerticalAlignment="Center"
+                       Margin="20,0,0,0"/>
+        </Border>
+        <StackPanel Grid.Row="3" 
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center">
+            <Button Content="Pagar con Efectivo"
+                    Background="#512CD4"
+                    Style="{DynamicResource RoundedButton}"
+                    Height="50"
+                    Width="120"
+                    Margin="0,0,60,0"
+                    Click="pagarEfectivo_Click"/>
+            <Button Content="Pagar con Crédito"
+                    Background="#512CD4"
+                    Style="{DynamicResource RoundedButton}"
+                    Width="120"
+                    Height="50"
+                    Click="pagarCredito_Click"/>
+        </StackPanel>
+    </Grid>
+    
+</Window>

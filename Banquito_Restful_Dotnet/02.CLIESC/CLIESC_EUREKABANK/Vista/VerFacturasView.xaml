@@ -1,0 +1,62 @@
+﻿<Window x:Class="CLIESC_EUREKABANK.Vista.VerFacturasView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CLIESC_EUREKABANK.Vista"
+        mc:Ignorable="d"
+        Title="VerFacturasView"  
+        Background="#2B2B2B"
+        Height="520" Width="550">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="120"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <TextBlock 
+           Text="Ver Facturas"
+           Grid.Row="0"
+           Foreground="#9080D8"
+           FontSize="20"
+           HorizontalAlignment="Center"
+           Margin="0,8"/>
+        
+        <StackPanel Grid.Row="1"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center">
+            <TextBlock Text="EMPRESA BANQUITO"
+               FontWeight="Bold"
+               HorizontalAlignment="Center"
+               Foreground="White"
+               FontSize="20"
+               />
+
+            <TextBlock Text="RUC: 1234567890"
+               Foreground="White"
+               HorizontalAlignment="Center"/>
+            <TextBlock Text="Direccion: Av.Principal, Sangolqui, Ecuador"
+               Foreground="White"
+               HorizontalAlignment="Center"/>
+
+            <TextBlock Text="Telefono: +593 999 999 999"
+               Foreground="White"
+               HorizontalAlignment="Center"/>
+
+            <TextBlock Text="Correo: contacto@banquito.com"
+               Foreground="White"
+               HorizontalAlignment="Center"/>
+            <Separator Width="420"/>
+
+
+        </StackPanel>
+
+        <Grid Grid.Row="2">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel Name="FacturasContainer" Orientation="Vertical" Margin="10" />
+            </ScrollViewer>
+        </Grid>
+
+    </Grid>
+</Window>

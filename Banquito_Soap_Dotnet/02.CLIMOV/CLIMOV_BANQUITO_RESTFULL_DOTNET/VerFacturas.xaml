@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CLIMOV_BANQUITO_RESTFULL_DOTNET.VerFacturas"
+             Title="Ver Facturas">
+
+    <Grid RowDefinitions="Auto,*">
+        <CollectionView 
+            x:Name="FacturasCollectionView"
+            Grid.Row="1"
+            ItemsSource="{Binding Facturas}">
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Margin="10" Padding="15" BorderColor="LightGray">
+                        <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                            <!-- Contenido anterior -->
+                            <Label Grid.Row="0" 
+                                   Text="{Binding NombreCliente}" 
+                                   FontSize="18" 
+                                   FontAttributes="Bold"/>
+
+                            <Label Grid.Row="1" 
+                                   Text="{Binding Cedula}" 
+                                   FontSize="14" 
+                                   TextColor="Gray"/>
+
+                            <Grid Grid.Row="2" ColumnDefinitions="*,*">
+                                <Label Grid.Column="0" 
+                                       Text="{Binding Fecha, StringFormat='{0:dd/MM/yyyy}'}" 
+                                       TextColor="Gray"/>
+                                <Label Grid.Column="1" 
+                                       Text="{Binding FormaPago}" 
+                                       HorizontalOptions="End" 
+                                       TextColor="Gray"/>
+                            </Grid>
+
+                            <!-- Lista de Productos -->
+                            <StackLayout Grid.Row="3" Margin="0,10,0,10">
+                                <Label Text="Productos:" 
+                                       FontAttributes="Bold"/>
+                                <CollectionView ItemsSource="{Binding Productos}">
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate>
+                                            <Label Text="{Binding .}" 
+                                                   Margin="10,2"/>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
+                            </StackLayout>
+
+                            <Grid Grid.Row="4" ColumnDefinitions="*,*">
+                                <Label Grid.Column="0" 
+                                       Text="Cantidad de productos:" 
+                                       TextColor="Gray"/>
+                                <Label Grid.Column="1" 
+                                       Text="{Binding Cantidad}" 
+                                       HorizontalOptions="End" 
+                                       TextColor="Gray"/>
+                            </Grid>
+
+                            <Grid Grid.Row="5" ColumnDefinitions="*,*">
+                                <Label Grid.Column="0" 
+                                       Text="Descuento:" 
+                                       FontAttributes="Bold" 
+                                       TextColor="Blue"/>
+                                <Label Grid.Column="1" 
+                                       Text="{Binding Descuento, StringFormat='%{0:N2}'}" 
+                                       HorizontalOptions="End" 
+                                       TextColor="Blue" 
+                                       FontAttributes="Bold"/>
+                            </Grid>
+
+                            <Grid Grid.Row="6" ColumnDefinitions="*,*">
+                                <Label Grid.Column="0" 
+                                       Text="Total a pagar:" 
+                                       FontAttributes="Bold"/>
+                                <Label Grid.Column="1" 
+                                       Text="{Binding Total, StringFormat='${0:N2}'}" 
+                                       HorizontalOptions="End" 
+                                       TextColor="Green" 
+                                       FontAttributes="Bold"/>
+                            </Grid>
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>

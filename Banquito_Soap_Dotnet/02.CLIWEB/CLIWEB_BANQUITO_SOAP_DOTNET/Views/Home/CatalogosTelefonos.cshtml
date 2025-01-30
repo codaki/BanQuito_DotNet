@@ -1,0 +1,201 @@
+﻿@{
+    ViewBag.Title = "Catálogo de Teléfonos";
+}
+<!-- Agrega esta sección para cambiar el fondo de toda la página -->
+<style>
+    body {
+        background-color: #121212; /* Fondo oscuro */
+        color: black; /* Texto blanco por defecto */
+    }
+
+    h2 {
+        color: #7a7397; /* Un color suave para el título */
+    }
+
+</style>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Gestión de Teléfonos</h5>
+
+                    <div class="form-group">
+                        <input type="text" id="EntryId" class="form-control" placeholder="ID del Teléfono" />
+                    </div>
+
+                    <div class="form-group">
+                        <input type="text" id="EntryNombre" class="form-control" placeholder="Nombre del Teléfono" />
+                    </div>
+
+                    <div class="form-group">
+                        <input type="number" id="EntryPrecio" class="form-control" placeholder="Precio" step="0.01" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Foto del Teléfono</label>
+                        <input type="file" id="FileImagen" class="form-control" accept="image/*" />
+                        <img id="ImagePreview" class="img-fluid mt-2" style="max-height: 200px; background-color: #E6E6E6;" />
+                    </div>
+
+                    <div class="btn-group-vertical w-100">
+                        <button id="BtnAgregar" class="btn btn-success mb-2">Agregar</button>
+                        <button id="BtnEliminar" class="btn btn-danger mb-2">Eliminar</button>
+                        <button id="BtnActualizar" class="btn btn-primary mb-2">Actualizar</button>
+                        <button id="BtnVerTelefonos" class="btn btn-secondary">Ver Teléfonos</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-light">
+                    <h5 class="card-title">Catalogo de Teléfonos</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="TelefonosTable" class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Precio</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Tabla será poblada dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Image to Base64 conversion
+            $('#FileImagen').change(function (e) {
+                var file = e.target.files[0];
+                var reader = new FileReader();
+                reader.onloadend = function () {
+                    var result = reader.result;
+                    // Remover el prefijo data:image/png;base64,
+                    var base64Image = result.split(',')[1];
+                    $('#ImagePreview').attr('src', result); // Previsualización con el prefijo
+                    $('#ImagePreview').data('base64', base64Image); // Guardar sin el prefijo en un atributo personalizado
+                }
+                reader.readAsDataURL(file);
+            });
+
+
+            // Agregar Telefono
+            $('#BtnAgregar').click(function() {
+                var nombre = $('#EntryNombre').val();
+                var precio = $('#EntryPrecio').val();
+                var base64Image = $('#ImagePreview').data('base64'); // Obtener el valor sin el prefijo
+
+                $.ajax({
+                    url: '@Url.Action("AgregarTelefono", "Home")',
+                    type: 'POST',
+                    data: { nombre: nombre, precio: precio, base64Image: base64Image },
+                    success: function(response) {
+                        alert(response.message);
+                        if (response.success) {
+                            $('#EntryNombre, #EntryPrecio').val('');
+                            $('#ImagePreview').attr('src', '');
+                            $('#FileImagen').val('');
+                        }
+                    }
+                });
+            });
+
+            // Eliminar Telefono
+            $('#BtnEliminar').click(function() {
+                var codTel = $('#EntryId').val();
+
+                $.ajax({
+                    url: '@Url.Action("EliminarTelefono", "Home")',
+                    type: 'POST',
+                    data: { codTel: codTel },
+                    success: function(response) {
+                        alert(response.message);
+                        if (response.success) {
+                            $('#EntryId, #EntryNombre, #EntryPrecio').val('');
+                            $('#ImagePreview').attr('src', '');
+                        }
+                    }
+                });
+            });
+
+            // Actualizar Telefono
+            $('#BtnActualizar').click(function() {
+                var codTel = $('#EntryId').val();
+                var nombre = $('#EntryNombre').val();
+                var precio = $('#EntryPrecio').val();
+                var base64Image = $('#ImagePreview').data('base64'); // Obtener el valor sin el prefijo
+
+                $.ajax({
+                    url: '@Url.Action("ActualizarTelefono", "Home")',
+                    type: 'POST',
+                    data: { codTel: codTel, nombre: nombre, precio: precio, base64Image: base64Image },
+                    success: function(response) {
+                        alert(response.message);
+                        if (response.success) {
+                            $('#EntryId, #EntryNombre, #EntryPrecio').val('');
+                            $('#ImagePreview').attr('src', '');
+                            $('#FileImagen').val('');
+                        }
+                    }
+                });
+            });
+
+            // Ver Telefonos
+            $('#BtnVerTelefonos').click(function() {
+                $.ajax({
+                    url: '@Url.Action("ObtenerTelefonos", "Home")',
+                    type: 'GET',
+                    success: function(response) {
+                        if (response.success) {
+                            var tableBody = $('#TelefonosTable tbody');
+                            tableBody.empty();
+
+                            // Check if response.telefonos is an array
+                            var telefonos = Array.isArray(response.telefonos)
+                                ? response.telefonos
+                                : [response.telefonos]; // Wrap single object in array if needed
+
+                            telefonos.forEach(function(telefono) {
+                                tableBody.append(`
+                                    <tr onclick="selectTelefono(${telefono.COD_TEL}, '${telefono.NOMBRE}', ${telefono.PRECIO})">
+                                        <td>${telefono.COD_TEL}</td>
+                                        <td>${telefono.NOMBRE}</td>
+                                        <td>${Number(telefono.PRECIO).toFixed(2)}</td>
+                                    </tr>
+                                `);
+                            });
+                        } else {
+                            console.error('Failed to fetch telefonos:', response.message);
+                            alert('No se pudieron cargar los teléfonos');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('AJAX Error:', status, error);
+                        alert('Error al cargar los teléfonos');
+                    }
+                });
+            });
+
+            // Select Telefono from table
+            window.selectTelefono = function(id, nombre, precio) {
+                $('#EntryId').val(id);
+                $('#EntryNombre').val(nombre);
+                $('#EntryPrecio').val(Number(precio).toFixed(2));
+            }
+        });
+    </script>
+}

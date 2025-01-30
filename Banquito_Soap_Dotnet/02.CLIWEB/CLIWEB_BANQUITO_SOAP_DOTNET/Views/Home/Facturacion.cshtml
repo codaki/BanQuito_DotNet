@@ -1,0 +1,122 @@
+﻿@model List<CLIWEB_BANQUITO_SOAP_DOTNET.Models.TelefonoConImagen>
+
+<style>
+    body {
+        background-color: #121212;
+        color: black;
+    }
+
+    h2 {
+        color: #7a7397;
+    }
+
+    .card {
+        background-color: #333;
+        color: white;
+    }
+
+    .custom-button {
+        font-size: 1.2em;
+        color: #39D353;
+    }
+
+    .form-select {
+        background-color: #333;
+        color: white;
+        border: 1px solid #666;
+        margin-bottom: 20px;
+    }
+
+        .form-select:focus {
+            background-color: #444;
+            color: white;
+            border-color: #7a7397;
+        }
+</style>
+
+<div class="container">
+    <h2>Facturación</h2>
+
+    <!-- Combobox de filtrado -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <select id="marcaFilter" class="form-select" onchange="filterByMarca()">
+                <option value="Todos">Todos los teléfonos</option>
+                @foreach (var marca in ViewBag.Marcas)
+                {
+                    if (marca == ViewBag.MarcaSeleccionada)
+                    {
+                        <option value="@marca" selected>@marca</option>
+                    }
+                    else
+                    {
+                        <option value="@marca">@marca</option>
+                    }
+                }
+            </select>
+        </div>
+    </div>
+
+    <!-- Contenedor de tarjetas -->
+    <div class="row">
+        @if (Model != null && Model.Any())
+        {
+            foreach (var telefono in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="@telefono.FotoImage" class="card-img-top" alt="@telefono.NOMBRE" style="height: 250px; object-fit: cover;">
+                        <div class="card-body">
+                            <h5 class="card-title">@telefono.NOMBRE</h5>
+                            <p class="card-text">Precio: $@telefono.PRECIO.ToString("F2")</p>
+                            <button class="btn btn-success agregar-carrito" data-cod-tel="@telefono.COD_TEL">
+                                Agregar 🛒
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12 text-center">
+                <p class="text-white">No se encontraron teléfonos para la marca seleccionada.</p>
+            </div>
+        }
+    </div>
+
+    <!-- Botón Ver Carrito -->
+    <div class="text-center mt-3 mb-4">
+        <a href="@Url.Action("Carrito", "Home")" class="btn btn-primary">
+            Ver Carrito
+        </a>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function filterByMarca() {
+            var marcaSeleccionada = $('#marcaFilter').val();
+            window.location.href = '@Url.Action("Facturacion", "Home")?marcaSeleccionada=' + encodeURIComponent(marcaSeleccionada);
+        }
+
+        $(document).ready(function() {
+            $('.agregar-carrito').click(function() {
+                var codTel = $(this).data('cod-tel');
+
+                $.ajax({
+                    url: '@Url.Action("AgregarAlCarrito", "Home")',
+                    type: 'POST',
+                    data: { codTel: codTel },
+                    success: function(response) {
+                        if (response.success) {
+                            alert(response.message);
+                        } else {
+                            alert('Error: ' + response.message);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+}

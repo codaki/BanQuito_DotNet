@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:CLIMOV_BANQUITO_RESTFULL_DOTNET"
+             x:Class="CLIMOV_BANQUITO_RESTFULL_DOTNET.Carrito"
+             Title="Carrito de Compras">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+            <!-- Empty cart message -->
+            <Label x:Name="EmptyCartMessage"
+                   Text="Tu carrito está vacío"
+                   IsVisible="false"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   FontSize="Medium"
+                   Margin="0,20,0,0"/>
+
+            <!-- Cart items list -->
+            <CollectionView x:Name="CarritoCollectionView"
+                          ItemsSource="{Binding CarritoItems}"
+                          EmptyView="No hay productos en el carrito"
+                          Margin="0,0,0,10">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame BorderColor="LightGray" 
+                               HasShadow="True"
+                               CornerRadius="10"
+                               Padding="15"
+                               Margin="0,5">
+                            <Grid ColumnDefinitions="Auto,*,Auto" 
+                                  ColumnSpacing="15">
+                                <!-- Product Image -->
+                                <Frame Grid.Column="0"
+                                       IsClippedToBounds="True"
+                                       CornerRadius="8"
+                                       Padding="0">
+                                    <Image Source="{Binding FotoImage}"
+                                           Aspect="AspectFill"
+                                           HeightRequest="100"
+                                           WidthRequest="100"/>
+                                </Frame>
+
+                                <!-- Product Details -->
+                                <VerticalStackLayout Grid.Column="1" 
+                                                   Spacing="5"
+                                                   VerticalOptions="Center">
+                                    <Label Text="{Binding NOMBRE}"
+                                           FontSize="16"
+                                           FontAttributes="Bold"/>
+                                    <Label Text="{Binding PRECIO, StringFormat='${0:N2}'}"
+                                           FontSize="14"
+                                           TextColor="{StaticResource Primary}"/>
+                                </VerticalStackLayout>
+
+                                <!-- Delete Button -->
+                                <Button Grid.Column="2"
+                                        Text="Eliminar"
+                                        BackgroundColor="Red"
+                                        TextColor="White"
+                                        Clicked="OnEliminarDelCarritoClicked"
+                                        CommandParameter="{Binding .}"
+                                        HeightRequest="40"
+                                        VerticalOptions="Center"/>
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- Total Amount -->
+            <Frame BorderColor="LightGray"
+                   CornerRadius="10"
+                   Padding="15">
+                <Grid ColumnDefinitions="*,Auto">
+                    <Label Text="Total:"
+                           FontAttributes="Bold"
+                           FontSize="18"
+                           Grid.Column="0"/>
+                    <Label x:Name="LabelTotal"
+                           Text="{Binding Total, StringFormat='${0:N2}'}"
+                           FontAttributes="Bold"
+                           FontSize="18"
+                           Grid.Column="1"/>
+                </Grid>
+            </Frame>
+
+            <!-- Payment Buttons -->
+            <VerticalStackLayout Spacing="20" 
+                                 HorizontalOptions="Center">
+                <Button Text="Pagar con Efectivo"
+                        Clicked="OnPagarConEfectivoClicked"
+                        BackgroundColor="{StaticResource Primary}"
+                        WidthRequest="200"/>
+                <Button Text="Pagar con Crédito"
+                        Clicked="OnPagarConCreditoClicked"
+                        BackgroundColor="{StaticResource Secondary}"
+                        WidthRequest="200"/>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

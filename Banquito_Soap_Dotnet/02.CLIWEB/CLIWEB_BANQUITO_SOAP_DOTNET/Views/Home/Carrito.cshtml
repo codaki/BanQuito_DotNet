@@ -1,0 +1,158 @@
+﻿@model IEnumerable<CLIWEB_BANQUITO_SOAP_DOTNET.Models.TelefonoConImagen>
+@{
+    ViewBag.Title = "Carrito de Compras";
+    var total = Model.Sum(x => x.PRECIO);
+}
+<style>
+    body {
+        background-color: #121212; /* Fondo oscuro */
+        color: white; /* Texto blanco por defecto */
+    }
+
+    h1 {
+        color: #7a7397; /* Un color suave para el título */
+    }
+
+    table {
+        color: white; /* Asegura que el texto de la tabla sea blanco */
+    }
+
+        table th, table td {
+            color: white; /* Asegura que tanto los encabezados como las celdas tengan texto blanco */
+        }
+
+    .custom-total-value {
+        text-align: left !important; /* Alinea el valor del total a la derecha */
+        padding-right: 0px !important; /* Ajusta el espacio de padding a la derecha */
+        margin-left: -1px !important; /* Empuja el total a la derecha */
+        margin-right: 0 !important; /* Asegura que no haya margen extra en la derecha */
+    }
+
+    tfoot td {
+        padding: 8px 5px !important; /* Fuerza padding consistente para las celdas del footer */
+    }
+
+</style>
+
+<h1>Carrito de Compras</h1>
+@if (!Model.Any())
+{
+    <p>El carrito está vacío.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th></th>
+                <th>Precio</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.NOMBRE</td>
+                    <td class="align-middle">
+                        <img src="data:image/jpeg;base64,@item.FOTO"
+                             style="height: 50px; width: 50px; object-fit: cover;" />
+                    </td>
+                    <td>$@item.PRECIO.ToString("F2")</td>
+                    <td>
+                        <button class="btn btn-danger eliminar-carrito" data-cod-tel="@item.COD_TEL">
+                            Eliminar
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr class="table-dark">
+                <td colspan="2" class="custom-total-left"><strong>Total</strong></td>
+                <td class="custom-total-value"><strong>$@total.ToString("F2")</strong></td>
+                <td></td>
+            </tr>
+        </tfoot>
+    </table>
+}
+
+<div class="row justify-content-end">
+    <div class="col-md-6 text-end">
+        <a href="@Url.Action("Facturacion", "Home")" class="btn btn-secondary me-2">
+            <i class="fas fa-arrow-left"></i> Seguir Comprando
+        </a>
+        <button class="btn btn-success me-2" onclick="pagarEfectivo()">
+            <i class="fas fa-money-bill"></i> Pagar en Efectivo
+        </button>
+        <button class="btn btn-primary" onclick="pagarCredito()">
+            <i class="fas fa-credit-card"></i> Pagar con Crédito
+        </button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(document).ready(function() {
+            $('.eliminar-carrito').click(function() {
+                var codTel = $(this).data('cod-tel');
+
+                // Mostrar el SweetAlert2 de confirmación
+                Swal.fire({
+                    title: '¿Estás seguro?',
+                    text: "¿Deseas eliminar este producto del carrito?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#dc3545',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Sí, eliminar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Si el usuario confirma, realizar la petición AJAX para eliminar
+                        $.ajax({
+                            url: '@Url.Action("EliminarDelCarrito", "Home")',
+                            type: 'POST',
+                            data: { codTel: codTel },
+                            success: function(response) {
+                                if (response.success) {
+                                    // Recargar la página después de eliminar un artículo
+                                    Swal.fire(
+                                        'Eliminado!',
+                                        'El producto ha sido eliminado del carrito.',
+                                        'success'
+                                    ).then(() => {
+                                        location.reload();
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error',
+                                        text: response.message || 'Error al eliminar el producto'
+                                    });
+                                }
+                            },
+                            error: function() {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: 'Ocurrió un error al eliminar el producto'
+                                });
+                            }
+                        });
+                    }
+                });
+            });
+        });
+
+        function pagarEfectivo() {
+            window.location.href = '@Url.Action("PagarEfectivo", "Home")?total=@total';
+        }
+
+        function pagarCredito() {
+            window.location.href = '@Url.Action("PagarCredito", "Home")?total=@total';
+        }
+    </script>
+}

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CLIMOV_BANQUITO_RESTFULL_DOTNET.PagarEfectivo"
+             Title="Pagar Efectivo">
+    <VerticalStackLayout Padding="20" Spacing="15">
+        <!-- Campo para el nombre del cliente -->
+        <Label Text="Cédula:" FontSize="Medium" />
+        <Entry x:Name="EntryCedula" Placeholder="Ingrese la cédula del cliente" Keyboard="Numeric" />
+
+        <!-- Total de la factura -->
+        <Label Text="Total Original:" FontSize="Medium" />
+        <Label x:Name="LabelTotal" Text="$0.00" FontSize="Large" FontAttributes="Bold" />
+
+        <!-- Descuento -->
+        <Label Text="Descuento:" FontSize="Medium" />
+        <Label x:Name="LabelDescuento" Text="42%" FontSize="Medium" FontAttributes="Bold" TextColor="Green" />
+
+        <!-- Total con descuento -->
+        <Label Text="Total con Descuento:" FontSize="Medium" />
+        <Label x:Name="LabelTotalConDescuento" Text="$0.00" FontSize="Large" FontAttributes="Bold" TextColor="Green" />
+
+        <!-- Botón para guardar la factura -->
+        <Button Text="Guardar Factura" Clicked="OnGuardarFacturaClicked" />
+    </VerticalStackLayout>
+</ContentPage>

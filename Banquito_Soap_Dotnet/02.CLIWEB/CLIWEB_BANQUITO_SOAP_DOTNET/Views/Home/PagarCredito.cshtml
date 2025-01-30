@@ -1,0 +1,135 @@
+﻿@{
+    ViewData["Title"] = "Pagar con Crédito";
+}
+
+<style>
+    body {
+        background-color: #121212;
+        color: white;
+        font-family: Arial, sans-serif;
+    }
+
+    h1 {
+        color: #A37CFF;
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+    }
+
+    .form-label {
+        color: white;
+        font-size: 1rem;
+    }
+
+    .total-section {
+        margin-top: 10px;
+    }
+
+    .total {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: white;
+    }
+
+    .descuento {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #28a745;
+    }
+
+    .total-descuento {
+        font-size: 1.4rem;
+        font-weight: bold;
+        color: #28a745;
+    }
+
+    /* Modificar el input de la cédula para hacerlo más alargado */
+    .input-cedula {
+        border: 2px solid #6c757d;
+        background-color: #222;
+        color: white;
+        width: 100%; /* Hace que el input ocupe el 100% del ancho disponible del contenedor */
+        padding: 12px;
+        font-size: 1rem;
+        border-radius: 8px;
+        max-width: 1300px; /* Limita el ancho a un máximo de 600px */
+    }
+
+        .input-cedula:focus {
+            outline: none;
+            border-color: #A37CFF;
+            box-shadow: 0 0 5px #A37CFF;
+        }
+
+    /* Cambiar el color del botón */
+    .btn-verificar {
+        width: 100%;
+        padding: 12px;
+        font-size: 1rem;
+        font-weight: bold;
+        color: #7d2683; /* Color de la letra */
+        background-color: #c87ace; /* Color de fondo */
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+        .btn-verificar:hover {
+            background-color: #b56ab1; /* Color ligeramente más oscuro cuando el cursor está sobre el botón */
+        }
+</style>
+
+<h2>Pagar con Crédito</h2>
+
+<div>
+    <form method="post" asp-action="PagarCredito">
+        <!-- Campo de cédula -->
+        <div class="form-group">
+            <label for="cedula">Número de Cédula:</label>
+            <br />
+            <input type="text" id="cedula" name="cedula" class="input-cedula" placeholder="Ingrese el número de cédula" required />
+        </div>
+
+        <!-- Mostrar total -->
+        <div class="form-group">
+            <label>Total de la factura:</label>
+            <p><strong>@($"${ViewBag.Total}")</strong></p>
+            <!-- Campo oculto para mantener el valor del total -->
+            <input type="hidden" name="total" value="@ViewBag.Total" />
+        </div>
+
+
+        <!-- Botón de verificación -->
+        <div class="form-group">
+            <button type="submit" class="btn-verificar">Verificar si es sujeto a crédito</button>
+        </div>
+    </form>
+</div>
+
+<!-- Mensajes de error o éxito -->
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        @if (!string.IsNullOrEmpty(ViewBag.Error))
+        {
+            <text>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    html: '@Html.Raw(ViewBag.Error)'
+                });
+            </text>
+        }
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+            var successMessage = TempData["SuccessMessage"] as string;
+            <text>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Éxito',
+                    text: '@Html.Raw(successMessage)'
+                });
+            </text>
+        }
+    </script>
+}

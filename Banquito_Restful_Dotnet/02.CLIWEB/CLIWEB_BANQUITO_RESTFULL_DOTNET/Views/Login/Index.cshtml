@@ -1,0 +1,145 @@
+﻿@{
+    ViewBag.Title = "Home";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    /* Fondo con desenfoque y gradiente */
+    .login-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #9e91fc;
+        backdrop-filter: blur(8px);
+        z-index: -1;
+    }
+
+    /* Contenedor principal */
+    .login-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 20px;
+    }
+
+    /* Logo de la aplicación */
+    .login-logo {
+        text-align: center;
+        margin-bottom: 20px;
+        z-index: 1; /* Asegura que la imagen esté por encima de otros elementos */
+    }
+
+        .login-logo img {
+            width: 300px;
+            height: auto;
+        }
+
+    /* Caja de login */
+    .login-card {
+        width: 100%;
+        max-width: 450px;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        background-color: #4a4d4d;
+        z-index: 2; /* Caja de login por encima de la imagen */
+    }
+
+        /* Título de la pantalla */
+        .login-card h1 {
+            font-size: 28px;
+            font-weight: bold;
+            text-align: center;
+            color: white;
+        }
+
+        /* Subtítulo */
+        .login-card p {
+            font-size: 20px;
+            text-align: center;
+            color: white;
+        }
+
+    /* Contenedor de los campos de entrada */
+    .custom-input {
+        background-color: #000000; /* Fondo negro */
+        color: #ffffff; /* Texto blanco */
+        border: 1px solid #444444; /* Borde gris oscuro */
+        border-radius: 8px; /* Bordes redondeados */
+        padding: 15px; /* Espaciado interno */
+        font-size: 1rem; /* Tamaño de la fuente */
+        margin: 10px 0; /* Espaciado entre los campos */
+        width: 100%; /* Asegura que el campo ocupe todo el ancho disponible */
+    }
+
+        /* Placeholder de los campos de entrada */
+        .custom-input::placeholder {
+            color: #cccccc; /* Color gris para el placeholder */
+        }
+
+    /* Botón de inicio de sesión */
+    .btn-primary {
+        background-color: #9e91fc; /* Un tono morado más oscuro */
+        color: black; /* Texto blanco */
+        border-radius: 25px; /* Bordes redondeados */
+        padding: 15px;
+        font-size: 1rem;
+        font-weight: bold;
+        width: 70%; /* Asegura que el botón ocupe todo el ancho disponible */
+        text-align: center;
+        border: none;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-primary:hover {
+            background-color: #4a148c; /* Morado más oscuro al pasar el mouse */
+        }
+
+    /* Asegurando que el contenedor de los campos esté centrado */
+    .form-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        max-width: 450px; /* O cualquier valor que te guste para el ancho máximo */
+        margin: 0 auto;
+    }
+</style>
+
+<main class="login-container">
+    <div class="login-background"></div> <!-- Fondo de la página -->
+    <!-- Logo de la aplicación -->
+    <div class="login-logo">
+        <img src="~/Content/fondo_login.png" />
+    </div>
+
+    <!-- Caja de login -->
+    <section class="login-card">
+        <h1>Comercializadora de teléfonos</h1>
+        <p>Iniciar Sesión</p>
+
+        @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+        {
+            <div class="alert-danger">@ViewBag.ErrorMessage</div>
+        }
+
+        @using (Html.BeginForm("IniciarSesion", "Login", FormMethod.Post))
+        {
+            <div class="form-container">
+                <!-- Campo de Usuario -->
+                <input type="text" class="form-control custom-input" id="username" name="username" required placeholder="Usuario" />
+
+                <!-- Campo de Contraseña -->
+                <input type="password" class="form-control custom-input" id="password" name="password" required placeholder="Contraseña" />
+
+                <!-- Botón de Inicio de Sesión -->
+                <button type="submit" class="btn-primary">Ingresar</button>
+            </div>
+        }
+    </section>
+</main>

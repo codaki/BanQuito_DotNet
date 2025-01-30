@@ -1,0 +1,177 @@
+﻿@model List<CLIWEB_BANQUITO_RESTFULL_DOTNET.Controllers.HomeController.Telefono>
+@{
+    ViewBag.Title = "Carrito de Compras";
+    var total = Model.Sum(x => x.Precio);
+}
+
+<style>
+    body {
+        background-color: #121212;
+        color: white;
+    }
+
+    .container {
+        padding: 20px;
+    }
+
+    .alert-info {
+        background-color: #333333;
+        color: white;
+    }
+
+    .table {
+        color: white;
+    }
+
+    .table-light {
+        background-color: #1c1c1c;
+    }
+
+    .table-dark {
+        background-color: #333333;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #444444;
+    }
+
+    .btn {
+        color: white;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+    }
+</style>
+
+<div class="container">
+    <h3 class="mb-4">Carrito de Compras</h3>
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            <h4 class="alert-heading">¡Tu carrito está vacío!</h4>
+            <p>No hay productos en tu carrito de compras.</p>
+            <hr>
+            <a href="@Url.Action("Facturacion", "Home")" class="btn btn-primary">
+                <i class="fas fa-shopping-bag"></i> Ir a Comprar
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive mb-4">
+            <table class="table table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>Producto</th>
+                        <th>Imagen</th>
+                        <th class="text-end">Precio</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="align-middle">@item.Nombre</td>
+                            <td class="align-middle">
+                                <img src="data:image/jpeg;base64,@item.Foto"
+                                     alt="@item.Nombre"
+                                     style="height: 50px; width: 50px; object-fit: cover;" />
+                            </td>
+                            <td class="align-middle text-end">
+                                @String.Format("{0:C2}", item.Precio)
+                            </td>
+                            <td class="align-middle text-center">
+                                <button class="btn btn-danger btn-sm" onclick="eliminarDelCarrito(@item.Id)">
+                                    <i class="fas fa-trash"></i> Eliminar
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr class="table-dark">
+                        <td colspan="2"><strong>Total</strong></td>
+                        <td class="text-end"><strong>@String.Format("{0:C2}", total)</strong></td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <div class="row justify-content-end">
+            <div class="col-md-6 text-end">
+                <a href="@Url.Action("Facturacion", "Home")" class="btn btn-secondary me-2">
+                    <i class="fas fa-arrow-left"></i> Seguir Comprando
+                </a>
+                <button class="btn btn-success me-2" onclick="pagarEfectivo()">
+                    <i class="fas fa-money-bill"></i> Pagar en Efectivo
+                </button>
+                <button class="btn btn-primary" onclick="pagarCredito()">
+                    <i class="fas fa-credit-card"></i> Pagar con Crédito
+                </button>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function eliminarDelCarrito(id) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "¿Deseas eliminar este producto del carrito?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch('/Home/EliminarDelCarrito', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ id: id })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            location.reload();
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: data.message || 'Error al eliminar el producto'
+                            });
+                        }
+                    });
+                }
+            });
+        }
+
+        function pagarEfectivo() {
+            window.location.href = '@Url.Action("PagarEfectivo", "Home")?total=@total';
+        }
+
+        function pagarCredito() {
+            window.location.href = '@Url.Action("PagarCredito", "Home")?total=@total';
+        }
+    </script>
+}

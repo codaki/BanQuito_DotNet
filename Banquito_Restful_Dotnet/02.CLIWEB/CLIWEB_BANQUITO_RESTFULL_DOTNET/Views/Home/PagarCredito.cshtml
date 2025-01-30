@@ -1,0 +1,110 @@
+﻿@{
+    ViewBag.Title = "Pagar con Crédito";
+    var total = Request.QueryString["total"];
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #121212;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #121212;
+            color: #743094;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+            .container label, .container input, .container button {
+                display: block;
+                margin-bottom: 15px;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                color: white;
+            }
+
+                .container input[type="text"] {
+                    width: 100%;
+                    max-width: 500px;
+                }
+
+            .container button {
+                background-color: #7f55ca;
+                color: #000000;
+                border: none;
+                cursor: pointer;
+                width: 100%;
+                max-width: 500px;
+            }
+
+                .container button:hover {
+                    background-color: #333333;
+                }
+
+            .container label {
+                font-size: medium;
+            }
+
+            .container .total-label {
+                font-size: large;
+                font-weight: bold;
+                color: white;
+            }
+
+            .container h3 {
+                font-size: large;
+                font-weight: bold;
+                color: white;
+                margin-bottom: 10px;
+            }
+
+        .error {
+            color: red;
+        }
+
+        .success {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Pagar con Crédito</h2>
+
+        @if (TempData["Error"] != null)
+        {
+            <div class="error">@TempData["Error"]</div>
+        }
+
+        @if (TempData["Success"] != null)
+        {
+            <div class="success">@TempData["Success"]</div>
+        }
+
+    <form action="@Url.Action("VerificarCredito", "Home")" method="post">
+        <h3>Número de Cédula:</h3>
+        <input type="text" id="cedula" name="cedula" placeholder="Ingrese el número de cédula" maxlength="10" required style="color: black;" />
+
+
+        <p class="total-label">Total:  $<span id="total">@total</span></p>
+
+        <!-- Campo oculto para enviar el valor del total -->
+        <input type="hidden" name="total" value="@total" />
+
+        <button type="submit">Verificar si es sujeto a crédito</button>
+    </form>
+    </div>
+</body>
+</html>

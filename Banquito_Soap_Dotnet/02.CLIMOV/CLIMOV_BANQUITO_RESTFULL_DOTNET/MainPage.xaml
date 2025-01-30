@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CLIMOV_BANQUITO_RESTFULL_DOTNET.MainPage"
+             BackgroundColor="{AppThemeBinding Light=#f5f5f5, Dark=#b7eae8}">
+
+    <ScrollView>
+        <Grid RowDefinitions="Auto,*"
+              Padding="20">
+            <CollectionView>
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Span="2" Orientation="Vertical" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate></DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- Logo o Imagen -->
+            <Image Grid.Row="0"
+                   Source="fondo_login.png"
+                   HeightRequest="150"
+                   Margin="0,40,0,20"
+                   SemanticProperties.Description="Logo de la aplicación"/>
+
+            <Frame Grid.Row="1"
+                   Margin="0,20"
+                   Padding="20"
+                   CornerRadius="15"
+                   BackgroundColor="{AppThemeBinding Light=White, Dark=#2b2b2b}"
+                   HasShadow="True">
+
+                <VerticalStackLayout Spacing="25">
+                    <!-- Título de la pantalla -->
+                    <Label Text="Comercializadora de teléfonos"
+                           FontSize="28"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           TextColor="{AppThemeBinding Light=#1a1a1a, Dark=White}"/>
+
+                    <!-- Subtítulo -->
+                    <Label Text="Iniciar Sesión"
+                           FontSize="20"
+                           HorizontalOptions="Center"
+                           TextColor="{AppThemeBinding Light=#666666, Dark=#cccccc}"/>
+
+                    <!-- Contenedor de campos de entrada -->
+                    <VerticalStackLayout Spacing="15">
+                        <!-- Usuario -->
+                        <Frame Padding="15,5" 
+                               CornerRadius="8"
+                               HasShadow="False"
+                               BorderColor="{AppThemeBinding Light=#e0e0e0, Dark=#404040}">
+                            <Entry Placeholder="Usuario"
+                                   x:Name="UsernameEntry"
+                                   Keyboard="Text"
+                                   PlaceholderColor="{AppThemeBinding Light=#999999, Dark=#666666}"
+                                   TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+                        </Frame>
+
+                        <!-- Contraseña -->
+                        <Frame Padding="15,5"
+                               CornerRadius="8"
+                               HasShadow="False"
+                               BorderColor="{AppThemeBinding Light=#e0e0e0, Dark=#404040}">
+                            <Entry Placeholder="Contraseña"
+                                   x:Name="PasswordEntry"
+                                   IsPassword="True"
+                                   Keyboard="Text"
+                                   PlaceholderColor="{AppThemeBinding Light=#999999, Dark=#666666}"
+                                   TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+                        </Frame>
+                    </VerticalStackLayout>
+
+                    <!-- Botón de inicio de sesión -->
+                    <Button Text="Ingresar"
+                            x:Name="LoginButton"
+                            Clicked="OnLoginButtonClicked"
+                            HeightRequest="50"
+                            CornerRadius="25"
+                            FontAttributes="Bold"
+                            BackgroundColor="{AppThemeBinding Light=#2196f3, Dark=#9e91fc }"
+                            TextColor="Black"
+                            Margin="0,20,0,0"/>
+
+                </VerticalStackLayout>
+            </Frame>
+        </Grid>
+    </ScrollView>
+</ContentPage>

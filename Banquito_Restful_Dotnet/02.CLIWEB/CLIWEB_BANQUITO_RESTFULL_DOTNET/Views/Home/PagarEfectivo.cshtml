@@ -1,0 +1,121 @@
+﻿@{
+    ViewBag.Title = "Pagar Efectivo";
+    var total = Request.QueryString["total"];
+    var descuento = 42;
+    var totalConDescuento = string.IsNullOrEmpty(total) ? 0 : Convert.ToDouble(total) * (1 - Convert.ToDouble(descuento) / 100);
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #000000;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .title {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #665083;
+            font-weight: bold;
+        }
+
+        .label {
+            font-size: 18px;
+            margin: 10px 0 5px;
+            color: white;
+        }
+
+        .input {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .total, .descuento, .total-descuento {
+            font-weight: bold;
+            font-size: 18px;
+            margin: 10px 0;
+            color: white;
+        }
+
+        .descuento, .total-descuento {
+            color: white;
+        }
+
+        .button {
+            padding: 12px 25px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #5f3f86;
+            color: #000000;
+            width: 100%;
+        }
+
+            .button:hover {
+                opacity: 0.8;
+            }
+
+        .error {
+            color: red;
+            font-size: 16px;
+        }
+
+        .success {
+            color: green;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">Pagar Efectivo</div>
+
+        @if (ViewBag.ErrorMessage != null)
+        {
+            <div class="error">@ViewBag.ErrorMessage</div>
+        }
+
+        @if (ViewBag.Message != null)
+        {
+            <div class="success">@ViewBag.Message</div>
+        }
+
+        <!-- Formulario para enviar los datos -->
+        <form method="post" action="@Url.Action("GuardarFactura", "Home")">
+            <label class="label" for="cedula">Cédula:</label>
+            <input type="text" class="input" id="cedula" name="cedula" placeholder="Ingrese la cédula del cliente" required />
+
+            <div class="total">Total Original: $<span id="totalOriginal">@total</span></div>
+            <div class="descuento">Descuento: @descuento%</div>
+            <div class="total-descuento">Total con Descuento: $<span id="totalConDescuento">@totalConDescuento.ToString("0.00")</span></div>
+
+            <!-- Campo oculto para pasar el total -->
+            <input type="hidden" name="total" value="@total" />
+
+            <!-- Botón para guardar factura -->
+            <button type="submit" class="button">Guardar Factura</button>
+        </form>
+    </div>
+</body>
+</html>

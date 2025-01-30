@@ -1,0 +1,64 @@
+﻿@{
+    ViewBag.Title = "Menu";
+}
+
+
+<nav>
+    <ul>
+        <li><a href="/Home/CatalogosTelefonos" class="btn">Catálogo de Teléfonos</a></li>
+        <li><a href="/Home/Facturacion" class="btn">Facturación</a></li>
+        <li><a href="/Home/VerFacturas" class="btn">Ver facturas</a></li>
+        <li><a href="/Home/MontoMaximo" class="btn">Monto Maximo</a></li>
+        <li><a href="/Home/TablaAmortizacion" class="btn">Tabla de Amortizacion</a></li>
+    </ul>
+</nav>
+
+<style>
+    /* Fondo negro para la página */
+    body {
+        background-color: #000;
+        color: white;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    h2 {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 2rem;
+    }
+
+    nav {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    li {
+        margin: 10px 0;
+    }
+
+    /* Estilos de los botones (enlaces) */
+    .btn {
+        text-decoration: none;
+        background-color: #652196; /* Morado */
+        color: white;
+        padding: 12px 20px;
+        border-radius: 15px; /* Bordes redondeados */
+        font-weight: bold;
+        text-align: center;
+        display: inline-block;
+        width: 250px; /* Ambos botones tendrán el mismo tamaño */
+        transition: background-color 0.3s ease;
+    }
+
+        /* Cambio de color cuando se pasa el ratón sobre los botones */
+        .btn:hover {
+            background-color: #4a148c; /* Morado más oscuro */
+        }
+</style>

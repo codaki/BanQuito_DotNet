@@ -1,0 +1,63 @@
+﻿<Window x:Class="CLIESC_EUREKABANK.Vista.EurekabankMenu"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CLIESC_EUREKABANK.Vista"
+        mc:Ignorable="d"
+        Title="EurekabankMenu" Height="550" Width="450"
+        Background="#2B2B2B"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Button x:Name="CatalogoTelefonos"
+                Grid.Row="1" 
+                Content="Catalogo de Telefonos" 
+                Margin="120,20"
+                Style="{DynamicResource RoundedButton}"
+                Background="#690DAC"
+                FontSize="15"
+                Click="CatalogoTelefonos_Click"></Button>
+        <Button x:Name="Facturacion"
+                Grid.Row="2" 
+                Content="Facturacion"
+                Margin="120,20"
+                Style="{DynamicResource RoundedButton}"
+                Background="#690DAC"
+                FontSize="15"
+                Click="Facturacion_Click"></Button>
+        <Button x:Name="VerFacturacion"
+                Grid.Row="3" 
+                Content="Ver Facturacion"
+                Margin="120,20"
+                Style="{DynamicResource RoundedButton}"
+                Background="#690DAC"
+                FontSize="15"
+                Click="VerFacturacion_Click"></Button>
+        <Button x:Name="TablaAmortizacion"
+                Grid.Row="4" 
+                Content="Tabla de amortizacion"
+                Margin="120,20"
+                Style="{DynamicResource RoundedButton}"
+                Background="#690DAC"
+                FontSize="15"
+                Click="TablaAmortizacion_Click"></Button>
+        <Button x:Name="MontoMaximo"
+                Grid.Row="5" 
+                Content="Monto Máximo"
+                Margin="120,20"
+                Style="{DynamicResource RoundedButton}"
+                Background="#690DAC"
+                FontSize="15"
+                Click="MontoMaximo_Click"></Button>
+
+    </Grid>
+</Window>

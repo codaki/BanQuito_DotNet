@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CLIMOV_BANQUITO_RESTFULL_DOTNET.Menu"
+             Title="Menu"         
+             BackgroundColor="#121212">
+
+    <Grid RowDefinitions="*,Auto" Padding="20">
+        <VerticalStackLayout 
+        Grid.Row="0" 
+        Spacing="20"
+        VerticalOptions="Center">
+
+            <Button 
+            Text="Catálogo de Teléfonos" 
+            BackgroundColor="#63bdba"
+            TextColor="White"
+            CornerRadius="10"
+            FontSize="18"
+            HeightRequest="60"
+            WidthRequest="250"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center"
+            Clicked="OnCatalogoTelefonosClicked">
+                <Button.Shadow>
+                    <Shadow Brush="Black" 
+                        Offset="0,2" 
+                        Radius="10" 
+                        Opacity="0.5"/>
+                </Button.Shadow>
+            </Button>
+
+            <Button 
+            Text="Facturación" 
+            BackgroundColor="#63bdba"
+            TextColor="White"
+            CornerRadius="10"
+            FontSize="18"
+            HeightRequest="60"
+            WidthRequest="250"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center"
+            Clicked="OnFacturacionClicked">
+                <Button.Shadow>
+                    <Shadow Brush="Black" 
+                        Offset="0,2" 
+                        Radius="10" 
+                        Opacity="0.5"/>
+                </Button.Shadow>
+            </Button>
+            <Button 
+             Text="Ver facturas" 
+             BackgroundColor="#63bdba"
+             TextColor="White"
+             CornerRadius="10"
+             FontSize="18"
+             HeightRequest="60"
+             WidthRequest="250"
+             VerticalOptions="Center" 
+             HorizontalOptions="Center"
+             Clicked="OnVerFacturasClicked">
+                            <Button.Shadow>
+                                <Shadow Brush="Black" 
+                         Offset="0,2" 
+                         Radius="10" 
+                         Opacity="0.5"/>
+                            </Button.Shadow>
+            </Button>
+
+            <Button 
+            Text="Monto Máximo" 
+            BackgroundColor="#63bdba"
+            TextColor="White"
+            CornerRadius="10"
+            FontSize="18"
+            HeightRequest="60"
+            WidthRequest="250"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center"
+            Clicked="OnMontoMaximoClicked">
+                <Button.Shadow>
+                    <Shadow Brush="Black" 
+                        Offset="0,2" 
+                        Radius="10" 
+                        Opacity="0.5"/>
+                </Button.Shadow>
+            </Button>
+
+            <Button 
+            Text="Tabla de Amortización" 
+            BackgroundColor="#63bdba"
+            TextColor="White"
+            CornerRadius="10"
+            FontSize="18"
+            HeightRequest="60"
+            WidthRequest="250"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center"
+            Clicked="OnTablaAmortizacionClicked">
+                <Button.Shadow>
+                    <Shadow Brush="Black" 
+                        Offset="0,2" 
+                        Radius="10" 
+                        Opacity="0.5"/>
+                </Button.Shadow>
+            </Button>
+        </VerticalStackLayout>
+
+        <Label 
+        Grid.Row="1"
+        Text="© 2024 Banquito"
+        HorizontalOptions="Center"
+        TextColor="#63bdba"
+        Margin="0,20,0,10"/>
+    </Grid>
+</ContentPage>

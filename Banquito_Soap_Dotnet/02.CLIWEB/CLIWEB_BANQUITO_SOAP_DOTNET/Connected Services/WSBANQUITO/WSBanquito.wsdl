@@ -1,0 +1,600 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:tns="http://tempuri.org/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="InsertarTelefono">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="nombre" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="precio" type="s:decimal" />
+            <s:element minOccurs="0" maxOccurs="1" name="foto" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InsertarTelefonoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="InsertarTelefonoResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ObtenerTodosTelefonos">
+        <s:complexType />
+      </s:element>
+      <s:element name="ObtenerTodosTelefonosResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ObtenerTodosTelefonosResult" type="tns:ArrayOfTelefono" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfTelefono">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Telefono" nillable="true" type="tns:Telefono" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Telefono">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="COD_TEL" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="NOMBRE" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="PRECIO" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="FOTO" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ActualizarTelefono">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="codTel" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="nombre" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="precio" type="s:decimal" />
+            <s:element minOccurs="0" maxOccurs="1" name="foto" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ActualizarTelefonoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ActualizarTelefonoResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="EliminarTelefono">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="codTel" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="EliminarTelefonoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="EliminarTelefonoResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ValidarCredenciales">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="usuario" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="contrasena" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ValidarCredencialesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="ValidarCredencialesResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="VerificarSujetoCredito">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="cedula" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="VerificarSujetoCreditoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="VerificarSujetoCreditoResult" type="tns:VerificarSujetoCreditoResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="VerificarSujetoCreditoResult">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="EsSujetoCredito" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="Mensaje" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="CalcularMontoMaximoCredito">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="codCliente" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CalcularMontoMaximoCreditoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CalcularMontoMaximoCreditoResult" type="tns:CalcularMontoMaximoCreditoResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="CalcularMontoMaximoCreditoResult">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="MontoMaximoCredito" type="s:double" />
+          <s:element minOccurs="0" maxOccurs="1" name="Mensaje" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ObtenerCodigoCliente">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="cedula" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ObtenerCodigoClienteResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ObtenerCodigoClienteResult" type="tns:ObtenerCodigoClienteResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ObtenerCodigoClienteResult">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="CodigoCliente" nillable="true" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Mensaje" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="CrearTablaAmortizacion">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="codCliente" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="valorPrestamo" type="s:decimal" />
+            <s:element minOccurs="1" maxOccurs="1" name="numCuotas" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CrearTablaAmortizacionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CrearTablaAmortizacionResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ObtenerTablaAmortizacion">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="codCliente" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ObtenerTablaAmortizacionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ObtenerTablaAmortizacionResult" type="tns:ArrayOfAmortizacion" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfAmortizacion">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Amortizacion" nillable="true" type="tns:Amortizacion" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Amortizacion">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="NumeroCuota" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="ValorCuota" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="InteresPagado" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="CapitalPagado" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="Saldo" type="s:decimal" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="CrearFactura">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="codCliente" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="total" type="s:decimal" />
+            <s:element minOccurs="0" maxOccurs="1" name="formaPago" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="cantidad" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CrearFacturaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CrearFacturaResult" type="tns:CrearFacturaResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="CrearFacturaResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Mensaje" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="IdFactura" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="TotalFinal" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="Descuento" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ObtenerFacturas">
+        <s:complexType />
+      </s:element>
+      <s:element name="ObtenerFacturasResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ObtenerFacturasResult" type="tns:ArrayOfFactura" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfFactura">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Factura" nillable="true" type="tns:Factura" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Factura">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="IdFactura" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="NombreCliente" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Cedula" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Fecha" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="Total" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="FormaPago" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Descuento" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Cantidad" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="InsertarTelefonoSoapIn">
+    <wsdl:part name="parameters" element="tns:InsertarTelefono" />
+  </wsdl:message>
+  <wsdl:message name="InsertarTelefonoSoapOut">
+    <wsdl:part name="parameters" element="tns:InsertarTelefonoResponse" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerTodosTelefonosSoapIn">
+    <wsdl:part name="parameters" element="tns:ObtenerTodosTelefonos" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerTodosTelefonosSoapOut">
+    <wsdl:part name="parameters" element="tns:ObtenerTodosTelefonosResponse" />
+  </wsdl:message>
+  <wsdl:message name="ActualizarTelefonoSoapIn">
+    <wsdl:part name="parameters" element="tns:ActualizarTelefono" />
+  </wsdl:message>
+  <wsdl:message name="ActualizarTelefonoSoapOut">
+    <wsdl:part name="parameters" element="tns:ActualizarTelefonoResponse" />
+  </wsdl:message>
+  <wsdl:message name="EliminarTelefonoSoapIn">
+    <wsdl:part name="parameters" element="tns:EliminarTelefono" />
+  </wsdl:message>
+  <wsdl:message name="EliminarTelefonoSoapOut">
+    <wsdl:part name="parameters" element="tns:EliminarTelefonoResponse" />
+  </wsdl:message>
+  <wsdl:message name="ValidarCredencialesSoapIn">
+    <wsdl:part name="parameters" element="tns:ValidarCredenciales" />
+  </wsdl:message>
+  <wsdl:message name="ValidarCredencialesSoapOut">
+    <wsdl:part name="parameters" element="tns:ValidarCredencialesResponse" />
+  </wsdl:message>
+  <wsdl:message name="VerificarSujetoCreditoSoapIn">
+    <wsdl:part name="parameters" element="tns:VerificarSujetoCredito" />
+  </wsdl:message>
+  <wsdl:message name="VerificarSujetoCreditoSoapOut">
+    <wsdl:part name="parameters" element="tns:VerificarSujetoCreditoResponse" />
+  </wsdl:message>
+  <wsdl:message name="CalcularMontoMaximoCreditoSoapIn">
+    <wsdl:part name="parameters" element="tns:CalcularMontoMaximoCredito" />
+  </wsdl:message>
+  <wsdl:message name="CalcularMontoMaximoCreditoSoapOut">
+    <wsdl:part name="parameters" element="tns:CalcularMontoMaximoCreditoResponse" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerCodigoClienteSoapIn">
+    <wsdl:part name="parameters" element="tns:ObtenerCodigoCliente" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerCodigoClienteSoapOut">
+    <wsdl:part name="parameters" element="tns:ObtenerCodigoClienteResponse" />
+  </wsdl:message>
+  <wsdl:message name="CrearTablaAmortizacionSoapIn">
+    <wsdl:part name="parameters" element="tns:CrearTablaAmortizacion" />
+  </wsdl:message>
+  <wsdl:message name="CrearTablaAmortizacionSoapOut">
+    <wsdl:part name="parameters" element="tns:CrearTablaAmortizacionResponse" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerTablaAmortizacionSoapIn">
+    <wsdl:part name="parameters" element="tns:ObtenerTablaAmortizacion" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerTablaAmortizacionSoapOut">
+    <wsdl:part name="parameters" element="tns:ObtenerTablaAmortizacionResponse" />
+  </wsdl:message>
+  <wsdl:message name="CrearFacturaSoapIn">
+    <wsdl:part name="parameters" element="tns:CrearFactura" />
+  </wsdl:message>
+  <wsdl:message name="CrearFacturaSoapOut">
+    <wsdl:part name="parameters" element="tns:CrearFacturaResponse" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerFacturasSoapIn">
+    <wsdl:part name="parameters" element="tns:ObtenerFacturas" />
+  </wsdl:message>
+  <wsdl:message name="ObtenerFacturasSoapOut">
+    <wsdl:part name="parameters" element="tns:ObtenerFacturasResponse" />
+  </wsdl:message>
+  <wsdl:portType name="WSBanquitoSoap">
+    <wsdl:operation name="InsertarTelefono">
+      <wsdl:input message="tns:InsertarTelefonoSoapIn" />
+      <wsdl:output message="tns:InsertarTelefonoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerTodosTelefonos">
+      <wsdl:input message="tns:ObtenerTodosTelefonosSoapIn" />
+      <wsdl:output message="tns:ObtenerTodosTelefonosSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ActualizarTelefono">
+      <wsdl:input message="tns:ActualizarTelefonoSoapIn" />
+      <wsdl:output message="tns:ActualizarTelefonoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="EliminarTelefono">
+      <wsdl:input message="tns:EliminarTelefonoSoapIn" />
+      <wsdl:output message="tns:EliminarTelefonoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidarCredenciales">
+      <wsdl:input message="tns:ValidarCredencialesSoapIn" />
+      <wsdl:output message="tns:ValidarCredencialesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="VerificarSujetoCredito">
+      <wsdl:input message="tns:VerificarSujetoCreditoSoapIn" />
+      <wsdl:output message="tns:VerificarSujetoCreditoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CalcularMontoMaximoCredito">
+      <wsdl:input message="tns:CalcularMontoMaximoCreditoSoapIn" />
+      <wsdl:output message="tns:CalcularMontoMaximoCreditoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerCodigoCliente">
+      <wsdl:input message="tns:ObtenerCodigoClienteSoapIn" />
+      <wsdl:output message="tns:ObtenerCodigoClienteSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CrearTablaAmortizacion">
+      <wsdl:input message="tns:CrearTablaAmortizacionSoapIn" />
+      <wsdl:output message="tns:CrearTablaAmortizacionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerTablaAmortizacion">
+      <wsdl:input message="tns:ObtenerTablaAmortizacionSoapIn" />
+      <wsdl:output message="tns:ObtenerTablaAmortizacionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CrearFactura">
+      <wsdl:input message="tns:CrearFacturaSoapIn" />
+      <wsdl:output message="tns:CrearFacturaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerFacturas">
+      <wsdl:input message="tns:ObtenerFacturasSoapIn" />
+      <wsdl:output message="tns:ObtenerFacturasSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="WSBanquitoSoap" type="tns:WSBanquitoSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="InsertarTelefono">
+      <soap:operation soapAction="http://tempuri.org/InsertarTelefono" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerTodosTelefonos">
+      <soap:operation soapAction="http://tempuri.org/ObtenerTodosTelefonos" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ActualizarTelefono">
+      <soap:operation soapAction="http://tempuri.org/ActualizarTelefono" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EliminarTelefono">
+      <soap:operation soapAction="http://tempuri.org/EliminarTelefono" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidarCredenciales">
+      <soap:operation soapAction="http://tempuri.org/ValidarCredenciales" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VerificarSujetoCredito">
+      <soap:operation soapAction="http://tempuri.org/VerificarSujetoCredito" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CalcularMontoMaximoCredito">
+      <soap:operation soapAction="http://tempuri.org/CalcularMontoMaximoCredito" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerCodigoCliente">
+      <soap:operation soapAction="http://tempuri.org/ObtenerCodigoCliente" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CrearTablaAmortizacion">
+      <soap:operation soapAction="http://tempuri.org/CrearTablaAmortizacion" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerTablaAmortizacion">
+      <soap:operation soapAction="http://tempuri.org/ObtenerTablaAmortizacion" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CrearFactura">
+      <soap:operation soapAction="http://tempuri.org/CrearFactura" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerFacturas">
+      <soap:operation soapAction="http://tempuri.org/ObtenerFacturas" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="WSBanquitoSoap12" type="tns:WSBanquitoSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="InsertarTelefono">
+      <soap12:operation soapAction="http://tempuri.org/InsertarTelefono" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerTodosTelefonos">
+      <soap12:operation soapAction="http://tempuri.org/ObtenerTodosTelefonos" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ActualizarTelefono">
+      <soap12:operation soapAction="http://tempuri.org/ActualizarTelefono" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EliminarTelefono">
+      <soap12:operation soapAction="http://tempuri.org/EliminarTelefono" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidarCredenciales">
+      <soap12:operation soapAction="http://tempuri.org/ValidarCredenciales" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="VerificarSujetoCredito">
+      <soap12:operation soapAction="http://tempuri.org/VerificarSujetoCredito" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CalcularMontoMaximoCredito">
+      <soap12:operation soapAction="http://tempuri.org/CalcularMontoMaximoCredito" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerCodigoCliente">
+      <soap12:operation soapAction="http://tempuri.org/ObtenerCodigoCliente" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CrearTablaAmortizacion">
+      <soap12:operation soapAction="http://tempuri.org/CrearTablaAmortizacion" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerTablaAmortizacion">
+      <soap12:operation soapAction="http://tempuri.org/ObtenerTablaAmortizacion" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CrearFactura">
+      <soap12:operation soapAction="http://tempuri.org/CrearFactura" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtenerFacturas">
+      <soap12:operation soapAction="http://tempuri.org/ObtenerFacturas" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="WSBanquito">
+    <wsdl:port name="WSBanquitoSoap" binding="tns:WSBanquitoSoap">
+      <soap:address location="http://localhost:887/Servicio/WSBanquito.asmx" />
+    </wsdl:port>
+    <wsdl:port name="WSBanquitoSoap12" binding="tns:WSBanquitoSoap12">
+      <soap12:address location="http://localhost:887/Servicio/WSBanquito.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

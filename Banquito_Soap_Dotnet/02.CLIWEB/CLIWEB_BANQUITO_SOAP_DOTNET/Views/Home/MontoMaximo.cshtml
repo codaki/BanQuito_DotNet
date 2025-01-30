@@ -1,0 +1,133 @@
+﻿@{
+    ViewData["Title"] = "Monto Máximo de Crédito";
+}
+
+<style>
+    body {
+        background-color: #121212;
+        color: white;
+        font-family: Arial, sans-serif;
+    }
+
+    h1 {
+        color: #A37CFF;
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .form-label {
+        color: white;
+        font-size: 1rem;
+    }
+
+    .input-cedula {
+        border: 2px solid #6c757d;
+        background-color: #222;
+        color: white;
+        width: 100%; /* Hace que el input ocupe el 100% del ancho disponible del contenedor */
+        padding: 12px;
+        font-size: 1rem;
+        border-radius: 8px;
+        max-width: 1300px; /* Limita el ancho a un máximo de 1300px */
+        margin-bottom: 15px;
+    }
+
+        .input-cedula:focus {
+            outline: none;
+            border-color: #A37CFF;
+            box-shadow: 0 0 5px #A37CFF;
+        }
+
+    .btn-verificar {
+        width: 100%;
+        padding: 12px;
+        font-size: 1rem;
+        font-weight: bold;
+        color: #7d2683; /* Color de la letra */
+        background-color: #c87ace; /* Color de fondo */
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-bottom: 20px;
+    }
+
+        .btn-verificar:hover {
+            background-color: #b56ab1; /* Color ligeramente más oscuro cuando el cursor está sobre el botón */
+        }
+
+    .resultado {
+        font-size: 1.2rem;
+        color: white;
+        text-align: center;
+        margin-top: 20px;
+    }
+</style>
+
+<h1>Monto Máximo de Crédito</h1>
+
+<div>
+    <form method="post" asp-action="MontoMaximo">
+        <!-- Campo de cédula -->
+        <div class="form-group">
+            <label for="cedula" class="form-label">Número de Cédula:</label>
+            <input type="text" id="cedula" name="cedula" class="input-cedula" placeholder="Ingrese el número de cédula" required />
+        </div>
+
+        <!-- Botón para obtener el monto máximo -->
+        <div class="form-group">
+            <button type="submit" class="btn-verificar">Obtener Monto Máximo</button>
+        </div>
+    </form>
+
+    <!-- Mostrar el resultado -->
+    @if (ViewBag.MontoMaximo != null)
+    {
+        <div class="resultado">
+            <p><strong>Monto Máximo de Crédito:</strong> @($"${ViewBag.MontoMaximo:N2}")</p>
+        </div>
+    }
+    @if (!string.IsNullOrEmpty(ViewBag.Error))
+    {
+        <div class="resultado" style="color: red;">
+            <p><strong>Error:</strong> @ViewBag.Error</p>
+        </div>
+    }
+</div>
+
+<!-- Mensajes de error o éxito -->
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        @if (!string.IsNullOrEmpty(ViewBag.Error))
+        {
+            <text>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    html: '@Html.Raw(ViewBag.Error)'
+                });
+            </text>
+        }
+
+        @if (!string.IsNullOrEmpty(ViewBag.Success))
+    {
+        <text>
+            Swal.fire({
+                title: 'Resultado',
+                html: `
+                    <p><strong>Monto máximo de crédito:</strong> @($"${ViewBag.MontoMaximo:N2}")</p>
+                    <p><strong>Mensaje:</strong> Monto máximo de crédito calculado exitosamente.</p>
+                `,
+                confirmButtonText: 'OK',
+                customClass: {
+                    title: 'swal-title',
+                    htmlContainer: 'swal-content',
+                    confirmButton: 'swal-button'
+                }
+            });
+        </text>
+    }
+
+    </script>
+}

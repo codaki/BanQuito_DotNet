@@ -1,0 +1,137 @@
+﻿@{
+    ViewBag.Title = "Ver Facturas";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Cambia esto si tu layout tiene otro nombre
+}
+
+<!-- Agrega esta sección para cambiar el fondo de toda la página -->
+<style>
+    body {
+        background-color: #121212; /* Fondo oscuro */
+        color: white; /* Texto blanco por defecto */
+    }
+
+    h2 {
+        color: #7a7397; /* Un color suave para el título */
+    }
+
+    .factura-card {
+        background-color: #333; /* Fondo oscuro para las tarjetas */
+        border-radius: 10px;
+        padding: 15px;
+        width: 1350px;
+        color: white;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        margin-bottom: 15px; /* Agrega un espacio entre las tarjetas */
+    }
+
+        .factura-card p {
+            margin: 5px 0;
+        }
+
+        .factura-card .total {
+            font-size: 1.2em;
+            color: #39D353; /* Color verde para el total */
+        }
+
+    #noFacturasMessage {
+        display: none;
+        text-align: center;
+        color: gray;
+    }
+
+    #facturasContainer {
+        display: flex;
+        flex-direction: column; /* Cambiar a columna para que las tarjetas se apilen */
+        gap: 15px; /* Espacio entre las tarjetas */
+        align-items: center; /* Alinea las tarjetas al centro */
+    }
+</style>
+
+<h2>Ver Facturas</h2>
+
+<hr />
+
+<div id="facturasContainer" style="display: flex; flex-wrap: wrap; gap: 15px; justify-content: center;">
+    <!-- Las tarjetas se agregarán dinámicamente con JavaScript -->
+</div>
+
+<div id="noFacturasMessage" style="display: none; text-align: center; color: gray;">
+    No se encontraron facturas.
+</div>
+
+@section Scripts {
+    <script>
+    // Función para formatear fechas desde el formato "/Date(1234567890000)/"
+    function formatFecha(fechaJson) {
+        const timestamp = parseInt(fechaJson.replace(/\/Date\((\d+)\)\//, "$1"));
+        const date = new Date(timestamp);
+        return date.toLocaleDateString("es-ES", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit"
+        });
+    }
+
+    // Función para asignar los productos según la cantidad
+    function obtenerProductos(cantidad) {
+        const productos = ["Samsung", "Infinix", "Oppo", "Samsung", "iPhone"];
+        return productos.slice(0, cantidad).join(", ");
+    }
+
+    // Función para cargar las facturas al abrir la página
+    async function cargarFacturas() {
+        try {
+            const response = await fetch("@Url.Action("ObtenerFacturas", "Home")", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                const facturasContainer = document.getElementById("facturasContainer");
+                const noFacturasMessage = document.getElementById("noFacturasMessage");
+
+                // Limpiar el contenido del contenedor
+                facturasContainer.innerHTML = "";
+
+                if (data.facturas.length > 0) {
+                    noFacturasMessage.style.display = "none";
+
+                    // Crear tarjetas para cada factura
+                    data.facturas.forEach(factura => {
+                        const productos = obtenerProductos(factura.Cantidad);
+
+                        const card = `
+                            <div class="factura-card">
+                                <h4 style="margin: 0;">${factura.NombreCliente}</h4>
+                                <p style="margin: 5px 0;">${factura.Cedula}</p>
+                                <p style="margin: 5px 0; font-size: 0.9em;">${formatFecha(factura.Fecha)}</p>
+                                <p style="margin: 5px 0;">Forma de Pago: <strong>${factura.FormaPago}</strong></p>
+                                <p style="margin: 5px 0;">Descuento: ${factura.Descuento}</p>
+                                <p style="margin: 5px 0;" class="total">Cantidad: ${factura.Cantidad}</p>
+                                <p style="margin: 5px 0;"><strong>Productos: ${productos}</strong></p>
+                                <p style="margin: 5px 0;" class="total">Total: $${factura.Total.toFixed(2)}</p>
+                            </div>
+                        `;
+                        facturasContainer.insertAdjacentHTML("beforeend", card);
+                    });
+                } else {
+                    noFacturasMessage.style.display = "block";
+                }
+            } else {
+                alert(data.message || "Ocurrió un error al cargar las facturas.");
+            }
+        } catch (error) {
+            console.error("Error al cargar las facturas:", error);
+            alert("Ocurrió un error inesperado. Por favor, inténtelo de nuevo.");
+        }
+    }
+
+    // Llamar a la función al cargar la página
+    document.addEventListener("DOMContentLoaded", cargarFacturas);
+    </script>
+
+}

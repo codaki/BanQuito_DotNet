@@ -1,0 +1,127 @@
+﻿@model List<CLIWEB_BANQUITO_RESTFULL_DOTNET.Models.AmortizacionDetalle>
+
+@{
+    ViewBag.Title = "Generar Tabla de Amortización";
+}
+
+<style>
+    body {
+        background-color: #000; /* Fondo negro */
+        color: #fff; /* Texto blanco para el contenido */
+    }
+
+    .table {
+        background-color: #fff; /* Fondo blanco para la tabla */
+        color: #000; /* Texto negro */
+    }
+
+        .table thead {
+            background-color: #e0e0e0; /* Encabezado gris */
+            color: #000; /* Texto negro */
+        }
+
+        .table th, .table td {
+            border: 1px solid #ccc; /* Bordes claros */
+        }
+
+        .table tbody tr:nth-child(even) {
+            background-color: #f9f9f9; /* Fila alternada clara */
+        }
+
+    .form-control, .btn {
+        background-color: #333; /* Fondo oscuro para inputs y botones */
+        color: #fff;
+        border: 1px solid #555;
+    }
+
+        .form-control:focus, .btn:focus {
+            box-shadow: 0 0 5px #666;
+        }
+
+    .btn-primary {
+        background-color: gray;
+        border-color: dimgray;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+    .alert {
+        background-color: #333;
+        color: #fff;
+    }
+    .button-center {
+        display: flex;
+        justify-content: center;
+    }
+</style>
+
+<h2>Generar Tabla de Amortización</h2>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Success"]
+    </div>
+}
+
+<!-- Formulario para ingresar el número de cuotas -->
+@using (Html.BeginForm("GenerarTabla", "Home", FormMethod.Post))
+{
+    <div class="form-group">
+        <label for="cuotas">Número de Cuotas (entre 3 y 18):</label>
+        <input type="number" id="cuotas" name="cuota" min="3" max="18" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <input type="hidden" id="codigoCliente" name="codigoCliente" value="@ViewBag.CodigoCliente" readonly class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <input type="hidden" id="total" name="total" value="@ViewBag.Total" readonly class="form-control" />
+    </div>
+
+    <div class="form-group button-center">
+        <button type="submit" class="btn btn-primary">Generar Tabla</button>
+    </div>
+}
+
+<!-- Mostrar la tabla de amortización si hay datos -->
+@if (Model != null && Model.Any())
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th># Cuota</th>
+                <th>Valor Cuota</th>
+                <th>Interés Pagado</th>
+                <th>Capital Pagado</th>
+                <th>Saldo</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.NumeroCuota</td>
+                    <td>@item.ValorCuota</td>
+                    <td>@item.InteresPagado</td>
+                    <td>@item.CapitalPagado</td>
+                    <td>@item.Saldo</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No se ha generado la tabla de amortización aún.</p>
+}

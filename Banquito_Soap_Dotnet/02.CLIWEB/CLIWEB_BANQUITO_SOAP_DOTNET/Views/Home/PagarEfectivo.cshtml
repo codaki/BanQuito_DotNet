@@ -1,0 +1,192 @@
+﻿@{
+    ViewBag.Title = "Pagar Efectivo";
+    var total = Request.QueryString["total"];
+    var descuento = 42;
+    decimal totalOriginal = 0;
+    decimal.TryParse(total, out totalOriginal);
+    var totalConDescuento = totalOriginal * (1 - (descuento / 100M));
+}
+
+<style>
+    body {
+        background-color: #121212;
+        color: white;
+        font-family: Arial, sans-serif;
+    }
+
+    h1 {
+        color: #A37CFF;
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+    }
+
+    .form-label {
+        color: white;
+        font-size: 1rem;
+    }
+
+    .total-section {
+        margin-top: 10px;
+    }
+
+    .total {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: white;
+    }
+
+    .descuento {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #28a745;
+    }
+
+    .total-descuento {
+        font-size: 1.4rem;
+        font-weight: bold;
+        color: #28a745;
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+        font-size: 1rem;
+        font-weight: bold;
+        color: white;
+        background-color: #A37CFF;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+        button:hover {
+            background-color: #8756cc;
+        }
+
+    input {
+        border: 2px solid #6c757d;
+        max-width: 3200px; /* Puedes ajustar el valor de 500px a lo que desees */
+        background-color: #222;
+        color: white;
+    }
+
+        input:focus {
+            outline: none;
+            border-color: #A37CFF;
+            box-shadow: 0 0 5px #A37CFF;
+        }
+</style>
+
+<h1>Pagar Efectivo</h1>
+
+<div class="row">
+    <div class="col-md-12 mb-3">
+        <!-- Campo para la cédula -->
+        <label for="Cedula" class="form-label">Cédula:</label>
+        <input type="text" id="Cedula" name="Cedula" class="form-control" placeholder="Ingrese la cédula del cliente" maxlength="10" />
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <!-- Total original -->
+        <p class="total-section">Total Original:</p>
+        <div class="total">Total: $<span id="totalOriginal">@total</span></div>
+    </div>
+    <div class="col-md-12 mt-3">
+        <!-- Descuento -->
+        <p class="total-section">Descuento:</p>
+        <div class="descuento">Descuento: @descuento%</div>
+    </div>
+    <div class="col-md-12 mt-3">
+        <!-- Total con descuento -->
+        <p class="total-section">Total con Descuento:</p>
+        <div class="total-descuento">Total con Descuento: $<span id="totalConDescuento">@totalConDescuento.ToString("0.00")</span></div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12 text-center">
+        <!-- Botón para guardar la factura -->
+        <button onclick="guardarFactura()">
+            Guardar Factura
+        </button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function guardarFactura() {
+            var cedula = $('#Cedula').val();
+            var total = parseFloat($('#totalOriginal').text());
+            var cantidad = parseInt('@ViewBag.Cantidad') || 1; // Obtén la cantidad del carrito
+
+            if (!cedula) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Cédula requerida',
+                    text: 'Por favor, ingrese la cédula del cliente.'
+                });
+                return;
+            }
+
+            if (isNaN(total) || total <= 0) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Total inválido',
+                    text: 'El total de la factura no es válido.'
+                });
+                return;
+            }
+
+            Swal.fire({
+                title: '¿Deseas guardar la factura?',
+                text: "Confirma para continuar con el pago en efectivo.",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#198754',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Guardar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '@Url.Action("GuardarFactura", "Home")',
+                        type: 'POST',
+                        data: {
+                            cedula: cedula,
+                            total: total,
+                            cantidad: cantidad
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                Swal.fire(
+                                    'Factura Guardada!',
+                                    'El pago en efectivo se ha registrado con éxito.',
+                                    'success'
+                                ).then(() => {
+                                    window.location.href = '@Url.Action("Menu", "Home")';
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: response.message || 'Ocurrió un error al guardar la factura.'
+                                });
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.log('Error:', xhr.responseText); // Para debugging
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'No se pudo procesar la solicitud: ' + error
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+}

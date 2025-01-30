@@ -1,0 +1,358 @@
+﻿@{
+    ViewBag.Title = "Catálogo de Teléfonos";
+}
+
+<div class="central-panel">
+    <!-- Título -->
+    <h3 class="title">Catálogo de Teléfonos</h3>
+
+    <!-- Campos de Entrada -->
+    <div class="form-section">
+        <label for="telefonoId">ID del Teléfono</label>
+        <input id="telefonoId" name="telefonoId" type="text" placeholder="ID del Teléfono" />
+
+        <label for="telefonoNombre">Nombre del Teléfono</label>
+        <input id="telefonoNombre" name="telefonoNombre" type="text" placeholder="Nombre del Teléfono" />
+
+        <label for="telefonoPrecio">Precio</label>
+        <input id="telefonoPrecio" name="telefonoPrecio" type="text" placeholder="Precio" />
+
+        <!-- Foto del Teléfono Section -->
+        <label for="telefonoFoto">Foto del Teléfono</label>
+        <div class="foto-section">
+            <input type="file" id="telefonoFoto" name="telefonoFoto" accept="image/*" onchange="previewImage(event)" />
+            <img id="fotoPreview" src="" alt="Vista previa de la foto" style="display: none; width: 100px; height: 100px; object-fit: cover; border: 1px solid #ccc;" />
+        </div>
+    </div>
+
+    <!-- Botones -->
+    <div class="button-section">
+        <button class="btn agregar" onclick="agregarTelefono()">Agregar</button>
+        <button class="btn eliminar" onclick="eliminarTelefono()">Eliminar</button>
+        <button class="btn actualizar" onclick="actualizarTelefono()">Actualizar</button>
+    </div>
+
+    <!-- Ver Teléfonos -->
+    <button class="btn ver" onclick="verTelefonos()">Ver Teléfonos</button>
+
+    <!-- Vista de Teléfonos -->
+    <div class="telefonos-list">
+        <table class="telefonos-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Precio</th>
+                    <!--  <th>Foto</th>  -->
+
+                </tr>
+            </thead>
+            <tbody id="telefonosList">
+                <!-- Aquí se llenarán los teléfonos mediante JavaScript -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #121212;
+        font-family: Arial, sans-serif;
+        color: #333333;
+    }
+
+    .central-panel {
+        width: 350px;
+        margin: 50px auto;
+        background-color: #121212;
+        padding: 25px;
+        border-radius: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .title {
+        text-align: center;
+        font-size: 24px;
+        margin-bottom: 30px;
+        color: white;
+    }
+
+    .form-section label {
+        display: block;
+        font-size: 14px;
+        color: white;
+        margin-bottom: 5px;
+    }
+
+    .form-section input {
+        width: 100%;
+        height: 40px;
+        margin-bottom: 15px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 16px;
+        box-sizing: border-box;
+        background-color: #000000;
+        color: white;
+    }
+
+    .foto-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    .button-section {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+        .button-section button {
+            width: 30%;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+    .btn.agregar {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .btn.eliminar {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .btn.actualizar {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .btn.ver {
+        background-color: #4a4a4a;
+        color: white;
+        width: 100%;
+        padding: 15px;
+        margin-top: 20px;
+    }
+
+    .telefonos-list {
+        margin-top: 20px;
+        background-color: white;
+    }
+
+    .telefonos-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .telefonos-table th, .telefonos-table td {
+            text-align: center;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+
+        .telefonos-table th {
+            background-color: #f1f1f1;
+        }
+</style>
+
+<script>
+    async function agregarTelefono() {
+        const id = document.getElementById("telefonoId").value;
+        const nombre = document.getElementById("telefonoNombre").value;
+        const precio = document.getElementById("telefonoPrecio").value;
+        const foto = document.getElementById("telefonoFoto").files[0];
+
+        if (!id || !nombre || !precio || !foto) {
+            alert("Todos los campos deben ser completados.");
+            return;
+        }
+
+        // Convertir la foto a base64
+        const reader = new FileReader();
+        reader.onloadend = async function () {
+            const fotoBase64 = reader.result.split(',')[1]; // Obtener solo la cadena Base64
+
+            const telefonoData = {
+                id: id,
+                nombre: nombre,
+                precio: precio,
+                fotoBase64: fotoBase64
+            };
+
+            try {
+                const response = await fetch("/Home/Agregar", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(telefonoData),
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert("Teléfono agregado exitosamente.");
+                    verTelefonos(); // Actualiza la lista de teléfonos
+                } else {
+                    alert(result.message);
+                }
+            } catch (error) {
+                alert(`Error al agregar el teléfono: ${error.message}`);
+            }
+        };
+        reader.readAsDataURL(foto);
+    }
+
+    async function eliminarTelefono() {
+        const id = document.getElementById("telefonoId").value;
+
+        if (!id) {
+            alert("Debe ingresar un ID de teléfono.");
+            return;
+        }
+
+        try {
+            const response = await fetch("/Home/Eliminar", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ COD_TEL: id }), // Asegúrate de usar COD_TEL
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                alert("Teléfono eliminado exitosamente.");
+                verTelefonos(); // Actualiza la lista de teléfonos
+            } else {
+                alert(result.message);
+            }
+        } catch (error) {
+            alert(`Error al eliminar el teléfono: ${error.message}`);
+        }
+    }
+
+
+    async function actualizarTelefono() {
+        const id = document.getElementById("telefonoId").value;
+        const nombre = document.getElementById("telefonoNombre").value;
+        const precio = document.getElementById("telefonoPrecio").value;
+
+        // Si no tienes imagen, puedes omitir este paso
+        const fotoInput = document.getElementById("telefonoFoto");
+        const foto = fotoInput ? fotoInput.files[0] : null;
+
+        if (!id || !nombre || !precio) {
+            alert("Todos los campos deben ser completados.");
+            return;
+        }
+
+        let fotoBase64 = null;
+        if (foto) {
+            const reader = new FileReader();
+            reader.onloadend = async function () {
+                fotoBase64 = reader.result.split(',')[1]; // Elimina la parte "data:image/jpeg;base64,"
+                const telefonoData = {
+                    CodTel: id,
+                    Nombre: nombre,
+                    Precio: parseFloat(precio),
+                    Foto: fotoBase64, // Incluye la foto codificada
+                };
+                await sendDataToAPI(telefonoData);
+            };
+            reader.readAsDataURL(foto);
+        } else {
+            const telefonoData = {
+                CodTel: id,
+                Nombre: nombre,
+                Precio: parseFloat(precio),
+                Foto: null, // No incluye foto si no hay
+            };
+            await sendDataToAPI(telefonoData);
+        }
+    }
+
+    async function sendDataToAPI(telefonoData) {
+    try {
+        const response = await fetch("http://10.244.187.27/WS_BANQUITO/api/telefono/actualizar", {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(telefonoData),
+        });
+
+        const resultText = await response.text(); // Obtiene la respuesta como texto
+
+        console.log("Respuesta cruda:", resultText);
+
+        let result;
+        try {
+            result = JSON.parse(resultText); // Intenta parsear como JSON
+        } catch (e) {
+            result = { success: false, message: "No se pudo parsear la respuesta de la API" };
+        }
+
+        if (response.ok) {  // Verifica si el status es 200
+            alert("Teléfono actualizado exitosamente.");
+            verTelefonos(); // Actualiza la lista de teléfonos si es necesario
+        } else {
+            alert(result.message || "Error desconocido");
+        }
+    } catch (error) {
+        alert(`Error al actualizar el teléfono: ${error.message}`);
+    }
+}
+
+
+
+
+
+
+    async function verTelefonos() {
+        try {
+            const response = await fetch("/Home/Listar");
+            if (response.ok) {
+                const telefonos = await response.json();
+                const telefonosList = document.getElementById("telefonosList");
+                telefonosList.innerHTML = ""; // Limpiar la lista antes de agregar los nuevos teléfonos
+
+                telefonos.forEach(telefono => {
+                    const tr = document.createElement("tr");
+                    tr.innerHTML = `
+                        <td>${telefono.Id}</td>
+                        <td>${telefono.Nombre}</td>
+                        <td>${telefono.Precio}</td>
+                        <!-- <td><img src="${telefono.FotoUrl}" alt="Foto" style="width: 50px; height: 50px; object-fit: cover;" /></td> -->
+
+                    `;
+                    telefonosList.appendChild(tr);
+                });
+            } else {
+                alert("Error al obtener los teléfonos");
+            }
+        } catch (error) {
+            alert(`Error al obtener los teléfonos: ${error.message}`);
+        }
+    }
+
+    function previewImage(event) {
+        const file = event.target.files[0];
+        const preview = document.getElementById("fotoPreview");
+
+        const reader = new FileReader();
+        reader.onload = function () {
+            preview.src = reader.result;
+            preview.style.display = "block";
+        };
+        reader.readAsDataURL(file);
+    }
+</script>

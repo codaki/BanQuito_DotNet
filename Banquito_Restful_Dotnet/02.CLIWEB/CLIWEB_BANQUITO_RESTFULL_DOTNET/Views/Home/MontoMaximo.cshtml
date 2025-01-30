@@ -1,0 +1,110 @@
+﻿@{
+    ViewBag.Title = "Monto Máximo";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #121212;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #121212;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            color: white;
+            align-items: center;
+        }
+
+            .container label, .container input, .container button {
+                display: block;
+                width: 100%;
+                margin-bottom: 15px;
+            }
+
+            .container input {
+                padding: 10px;
+                max-width: 600px;
+                justify-content: center;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+
+            .container button {
+                padding: 10px;
+                max-width: 200px; /* Establece el máximo ancho del botón */
+                margin-left: auto; /* Centra el botón horizontalmente */
+                margin-right: auto; /* Centra el botón horizontalmente */
+                background-color: #563bb8;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+                .container button:hover {
+                    background-color: #0056b3;
+                }
+
+            .container .result {
+                color: white;
+                font-size: 1.2em;
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Monto Máximo</h2>
+        <label for="cedula">Ingrese el número de cédula del cliente</label>
+        <input type="text" id="cedula" placeholder="Número de cédula" />
+
+        <button onclick="obtenerMontoMaximo()">Obtener Monto Máximo</button>
+
+        <label id="resultado" class="result"></label>
+    </div>
+
+    <script>
+        async function obtenerMontoMaximo() {
+            const cedula = document.getElementById('cedula').value;
+
+            if (!cedula) {
+                alert("Por favor ingrese un número de cédula.");
+                return;
+            }
+
+            // Obtener el código de cliente
+            const codigoResponse = await fetch(`/Home/ObtenerCodigoCliente?cedula=${cedula}`);
+            const codigoData = await codigoResponse.json();
+
+            if (!codigoData.success || !codigoData.codigoCliente) {
+                document.getElementById('resultado').innerText = "No se pudo obtener el código del cliente.";
+                return;
+            }
+
+            const codigoCliente = codigoData.codigoCliente;
+
+            // Obtener el monto máximo de crédito
+            const montoResponse = await fetch(`/Home/ObtenerMontoMaximoCredito?codigoCliente=${codigoCliente}`);
+            const montoData = await montoResponse.json();
+
+            if (montoData.success) {
+                const { montoMaximo, mensaje } = montoData;
+                document.getElementById('resultado').innerText = `Monto máximo de crédito: ${montoMaximo}\nMensaje: ${mensaje}`;
+            } else {
+                document.getElementById('resultado').innerText = montoData.message || "Error al obtener el monto máximo de crédito.";
+            }
+        }
+    </script>
+</body>
+</html>

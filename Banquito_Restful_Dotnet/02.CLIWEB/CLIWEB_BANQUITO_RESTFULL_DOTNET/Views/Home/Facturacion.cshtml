@@ -1,0 +1,138 @@
+﻿@model List<CLIWEB_BANQUITO_RESTFULL_DOTNET.Controllers.HomeController.Telefono>
+@{
+    ViewBag.Title = "Facturación";
+}
+
+<style>
+    /* Establecer fondo negro */
+    body {
+        background-color: #121212;
+        color: white; /* Cambiar el color de texto a blanco */
+    }
+    /* Estilo para los contenedores */
+    .container {
+        padding: 20px;
+    }
+
+    .card {
+        background-color: #1c1c1c;
+        color: white;
+    }
+
+    .alert-info {
+        background-color: #333333;
+        color: white;
+    }
+</style>
+
+<div class="container">
+    <div class="row mb-4">
+        <div class="col">
+            <h3>Teléfonos Disponibles</h3>
+        </div>
+        <div class="col text-end">
+            <a href="@Url.Action("Carrito", "Home")" class="btn btn-primary">
+                <i class="fas fa-shopping-cart"></i> Ver Carrito
+            </a>
+        </div>
+    </div>
+
+    <!-- Filtro por nombre de teléfono -->
+    <div class="mb-4">
+        <label for="filtroNombre" class="form-label">Filtrar por Nombre</label>
+        <select id="filtroNombre" class="form-select" onchange="filtrarPorNombre()">
+            <option value="">Seleccione un teléfono</option>
+            @foreach (var telefono in Model)
+            {
+                <option value="@telefono.Nombre">@telefono.Nombre</option>
+            }
+        </select>
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="row" id="telefonosLista">
+            @foreach (var telefono in Model)
+            {
+                <div class="col-md-4 mb-4 telefono-item" data-nombre="@telefono.Nombre">
+                    <div class="card h-100 shadow-sm">
+                        <img src="data:image/jpeg;base64,@telefono.Foto"
+                             class="card-img-top"
+                             style="height: 200px; object-fit: cover;"
+                             alt="@telefono.Nombre" />
+                        <div class="card-body">
+                            <h5 class="card-title">@telefono.Nombre</h5>
+                            <p class="card-text">
+                                <strong>Precio:</strong> @String.Format("{0:C2}", telefono.Precio)
+                            </p>
+                            <button class="btn btn-success w-100"
+                                    onclick="agregarAlCarrito(@telefono.Id)">
+                                <i class="fas fa-cart-plus"></i> Agregar al Carrito
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            No hay teléfonos disponibles en este momento.
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        function agregarAlCarrito(id) {
+            fetch('/Home/AgregarAlCarrito', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id: id })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert("Producto agregado al carrito.");
+                        Swal.fire({
+                            icon: 'success',
+                            title: '¡Éxito!',
+                            text: 'Producto agregado al carrito',
+                            timer: 1500
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: data.message || 'No se pudo agregar al carrito'
+                        });
+                    }
+                })
+                .catch(error => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Ocurrió un error al procesar la solicitud'
+                    });
+                });
+        }
+
+        // Función para filtrar los teléfonos por nombre
+        function filtrarPorNombre() {
+            var filtro = document.getElementById('filtroNombre').value.toLowerCase();
+            var telefonos = document.querySelectorAll('.telefono-item');
+
+            telefonos.forEach(function (telefono) {
+                var nombre = telefono.getAttribute('data-nombre').toLowerCase();
+                if (nombre.indexOf(filtro) > -1 || filtro === '') {
+                    telefono.style.display = 'block';
+                } else {
+                    telefono.style.display = 'none';
+                }
+            });
+        }
+    </script>
+}

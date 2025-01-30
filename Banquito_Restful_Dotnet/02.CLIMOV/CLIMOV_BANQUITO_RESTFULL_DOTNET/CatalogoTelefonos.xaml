@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CLIMOV_BANQUITO_RESTFULL_DOTNET.CatalogoTelefonos"
+             Title="Catálogo de Teléfonos">
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="20">
+            <!-- Input Fields -->
+            <Entry x:Name="EntryId" 
+                   Placeholder="ID del Teléfono" 
+                   Keyboard="Numeric"/>
+
+            <Entry x:Name="EntryNombre" 
+                   Placeholder="Nombre del Teléfono"/>
+
+            <Entry x:Name="EntryPrecio" 
+                   Placeholder="Precio" 
+                   Keyboard="Numeric"/>
+
+            <!-- Foto del Teléfono Section -->
+            <Label Text="Foto del Teléfono" FontSize="Medium" Margin="0,10,0,5" />
+            <HorizontalStackLayout Spacing="10" VerticalOptions="Center" HorizontalOptions="Center">
+                <!-- Imagen cargada (Vista previa) -->
+                <Image x:Name="ImagePreview" 
+                       HeightRequest="100" 
+                       WidthRequest="100" 
+                       Aspect="AspectFit"
+                       BackgroundColor="#E6E6E6" />
+
+                <!-- Botón para seleccionar foto -->
+                <Button Text="Seleccionar Foto" 
+                        x:Name="BtnSeleccionarFoto" 
+                        BackgroundColor="Gray" 
+                        TextColor="White" 
+                        VerticalOptions="Center" />
+            </HorizontalStackLayout>
+
+            <!-- Buttons Layout -->
+            <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+                <Button Text="Agregar" 
+                        x:Name="BtnAgregar" 
+                        BackgroundColor="Green" 
+                        TextColor="White"/>
+
+                <Button Text="Eliminar" 
+                        x:Name="BtnEliminar" 
+                        BackgroundColor="Red" 
+                        TextColor="White"/>
+
+                <Button Text="Actualizar" 
+                        x:Name="BtnActualizar" 
+                        BackgroundColor="Blue" 
+                        TextColor="White"/>
+            </HorizontalStackLayout>
+
+            <!-- Ver Teléfonos Button -->
+            <Button Text="Ver Teléfonos" 
+                    x:Name="BtnVerTelefonos" 
+                    BackgroundColor="#4A4A4A" 
+                    TextColor="White"
+                    HorizontalOptions="Center"/>
+
+            <!-- Phones Collection View -->
+            <CollectionView 
+                x:Name="TelefonosCollection" 
+                HorizontalOptions="FillAndExpand"
+                BackgroundColor="White"
+                VerticalOptions="FillAndExpand"
+                Margin="0,10,0,0">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="2"/>
+                </CollectionView.ItemsLayout>
+
+                <!-- Header -->
+                <CollectionView.Header>
+                    <Grid 
+                        BackgroundColor="#E6E6FA" 
+                        ColumnDefinitions="*,*,*" 
+                        Padding="10">
+                        <Label Grid.Column="0" Text="ID" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#4A4A4A" />
+                        <Label Grid.Column="1" Text="NOMBRE" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#4A4A4A" />
+                        <Label Grid.Column="2" Text="PRECIO" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="#4A4A4A" />
+                    </Grid>
+                </CollectionView.Header>
+
+                <!-- Item Template -->
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid 
+                            BackgroundColor="White" 
+                            ColumnDefinitions="*,*,*" 
+                            Padding="10">
+                            <Label Grid.Column="0" Text="{Binding COD_TEL}" HorizontalTextAlignment="Center" TextColor="#333333" />
+                            <Label Grid.Column="1" Text="{Binding NOMBRE}" HorizontalTextAlignment="Center" TextColor="#333333" />
+                            <Label Grid.Column="2" Text="{Binding PRECIO}" HorizontalTextAlignment="Center" TextColor="#333333" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

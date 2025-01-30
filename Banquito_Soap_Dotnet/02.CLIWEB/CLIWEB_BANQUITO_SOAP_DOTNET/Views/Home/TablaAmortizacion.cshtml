@@ -1,0 +1,116 @@
+﻿@{
+    ViewData["Title"] = "Tabla de Amortización";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<style>
+    body {
+        background-color: #121212;
+        color: white;
+        font-family: Arial, sans-serif;
+    }
+
+    h2 {
+        color: #7a7397; /* Un color suave para el título */
+    }
+
+    table {
+        width: 100%;
+        background-color: white; /* Fondo blanco para la tabla */
+        color: black; /* Letra negra en la tabla */
+        border-collapse: collapse;
+        margin: 0 auto; /* Centra la tabla en la página */
+    }
+
+        table th, table td {
+            color: black; /* Asegura que el texto sea negro */
+            padding: 10px;
+            border: 1px solid #ddd; /* Agrega bordes a las celdas */
+            text-align: center; /* Centra el texto en las celdas */
+        }
+
+        table th {
+            background-color: #f2f2f2; /* Fondo gris suave para los encabezados */
+        }
+
+        table tr:nth-child(odd) {
+            background-color: #f9f9f9; /* Fondo blanco en las filas impares */
+        }
+
+    button {
+        width: 100%;
+        padding: 12px;
+        font-size: 1rem;
+        font-weight: bold;
+        color: white;
+        background-color: #8c8b8c;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+        button:hover {
+            background-color: #8c8b8c;
+        }
+
+    input {
+        border: 2px solid #6c757d;
+        max-width: 3200px;
+        background-color: #222;
+        color: white;
+    }
+</style>
+
+
+
+<!-- Mostrar error si hay alguno -->
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.Error
+    </div>
+}
+
+<!-- Formulario para ingresar la cédula -->
+<form method="post" action="@Url.Action("ObtenerTablaAmortizacion")">
+    <div class="form-group">
+        <label for="cedula">Ingrese número de cédula:</label>
+        <input type="text" class="form-control" id="cedula" name="cedula" placeholder="Ingrese número de cédula" maxlength="10" required />
+    </div>
+    <br>
+    <button type="submit" class="button">Generar</button>
+</form>
+<br>
+
+<!-- Si la tabla de amortización está disponible -->
+@if (Model != null && Model.Length > 0)
+{
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th># Cuota</th>
+                <th>Valor Cuota</th>
+                <th>Interés Pagado</th>
+                <th>Capital Pagado</th>
+                <th>Saldo</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.NumeroCuota</td>
+                    <td>@item.ValorCuota.ToString("C")</td>
+                    <td>@item.InteresPagado.ToString("C")</td>
+                    <td>@item.CapitalPagado.ToString("C")</td>
+                    <td>@item.Saldo.ToString("C")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No se encontró tabla de amortización para la cédula proporcionada.</p>
+}

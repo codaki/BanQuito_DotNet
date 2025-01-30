@@ -1,0 +1,140 @@
+﻿@model List<CLIWEB_BANQUITO_SOAP_DOTNET.Models.AmortizacionDetalle>
+
+@{
+    ViewData["Title"] = "Generar Tabla de Amortización";
+}
+<style>
+    body {
+        background-color: #121212;
+        color: white;
+        font-family: Arial, sans-serif;
+    }
+
+    h2 {
+        color: #7a7397; /* Un color suave para el título */
+    }
+
+    table {
+        width: 100%;
+        background-color: white; /* Fondo blanco para la tabla */
+        color: black; /* Letra negra en la tabla */
+        border-collapse: collapse;
+        margin: 0 auto; /* Centra la tabla en la página */
+    }
+
+        table th, table td {
+            color: black; /* Asegura que el texto sea negro */
+            padding: 10px;
+            border: 1px solid #ddd; /* Agrega bordes a las celdas */
+            text-align: center; /* Centra el texto en las celdas */
+        }
+
+        table th {
+            background-color: #f2f2f2; /* Fondo gris suave para los encabezados */
+        }
+
+        table tr:nth-child(odd) {
+            background-color: #f9f9f9; /* Fondo blanco en las filas impares */
+        }
+
+    button {
+        width: 100%;
+        padding: 12px;
+        font-size: 1rem;
+        font-weight: bold;
+        color: white;
+        background-color: #8c8b8c;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+        button:hover {
+            background-color: #8c8b8c;
+        }
+
+    .input-largo {
+        width: 100%; /* Puedes ajustarlo a un porcentaje o píxeles según sea necesario */
+        max-width: 4200px; /* Máximo ancho para limitar el tamaño */
+        padding: 10px; /* Mejora la apariencia del espacio interno */
+        font-size: 1rem; /* Ajusta el tamaño de la fuente */
+        border-radius: 8px; /* Bordes redondeados */
+    }
+
+
+</style>
+
+
+<h2>Generar Tabla de Amortización</h2>
+
+<form method="post" asp-action="GenerarTabla">
+
+    <!-- <div class="form-group">
+        <label for="codCliente">Código Cliente:</label>
+        <input type="text" id="codCliente" name="codCliente" value="@Request.QueryString["codCliente"]" readonly />
+    </div>
+
+    <div class="form-group">
+        <label for="total">Total de la Factura:</label>
+        <input type="text" id="total" name="total" value="@Request.QueryString["total"]" readonly />
+    </div> -->
+
+    <div class="form-group">
+        <label for="numeroCuotas">Número de Cuotas:</label>
+        <br>
+        <input class="input input-largo" type="number" id="numeroCuotas" placeholder="Número de Cuotas (3-18)" name="numeroCuotas" min="3" max="18" required />
+    </div>
+    <br>
+
+    <br>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Generar</button>
+    </div>
+</form>
+
+<!-- Mostrar errores de validación -->
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        @foreach (var entry in ViewData.ModelState)
+        {
+            foreach (var error in entry.Value.Errors)
+            {
+                <p>@error.ErrorMessage</p>
+            }
+        }
+    </div>
+}
+
+<!-- Mostrar la tabla de amortización si está disponible -->
+@if (Model != null)
+{
+    <table class="table table-bordered table-striped mt-4">
+        <thead class="thead-dark">
+            <tr>
+                <th># Cuota</th>
+                <th>Valor Cuota</th>
+                <th>Interés Pagado</th>
+                <th>Capital Pagado</th>
+                <th>Saldo</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.NumeroCuota</td>
+                    <td>@item.ValorCuota.ToString("C")</td>
+                    <td>@item.InteresPagado.ToString("C")</td>
+                    <td>@item.CapitalPagado.ToString("C")</td>
+                    <td>@item.Saldo.ToString("C")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No se encontró tabla de amortización para la cédula proporcionada.</p>
+}

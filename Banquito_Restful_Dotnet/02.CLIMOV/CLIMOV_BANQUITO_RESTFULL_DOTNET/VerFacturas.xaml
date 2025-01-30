@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CLIMOV_BANQUITO_RESTFULL_DOTNET.VerFacturas"
+             Title="Ver Facturas">
+    <Grid RowDefinitions="Auto,*">
+        <Entry x:Name="BuscarCedulaEntry"
+               Placeholder="Buscar por cédula..."
+               TextChanged="OnBuscarCedulaTextChanged"
+               Margin="10"/>
+        <CollectionView x:Name="FacturasCollectionView"
+                        Grid.Row="1"
+                        ItemsSource="{Binding Facturas}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Margin="10" Padding="15" BorderColor="LightGray">
+                        <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                            <!-- Contenido previo... -->
+                            <Label Grid.Row="0">
+                                <Label.Text>
+                                    <Binding Path="NombreCliente" />
+                                </Label.Text>
+                                <Label.FontSize>18</Label.FontSize>
+                                <Label.FontAttributes>Bold</Label.FontAttributes>
+                            </Label>
+
+                            <Label Grid.Row="1" TextColor="Gray">
+                                <Label.Text>
+                                    <Binding Path="Cedula" />
+                                </Label.Text>
+                                <Label.FontSize>14</Label.FontSize>
+                            </Label>
+
+                            <Label Grid.Row="2" TextColor="Gray">
+                                <Label.Text>
+                                    <Binding Path="Direccion" />
+                                </Label.Text>
+                            </Label>
+
+                            <Label Grid.Row="3" TextColor="Gray">
+                                <Label.Text>
+                                    <Binding Path="Telefono" />
+                                </Label.Text>
+                            </Label>
+
+                            <Label Grid.Row="4" TextColor="Gray">
+                                <Label.Text>
+                                    <MultiBinding StringFormat="Cantidad de productos: {0}">
+                                        <Binding Path="Cantidad" />
+                                    </MultiBinding>
+                                </Label.Text>
+                            </Label>
+
+                            <!-- Nuevo Label para productos -->
+                            <Label Grid.Row="5" TextColor="Purple">
+                                <Label.Text>
+                                    <MultiBinding StringFormat="Productos: {0}">
+                                        <Binding Path="ProductosString" />
+                                    </MultiBinding>
+                                </Label.Text>
+                            </Label>
+
+                            <Label Grid.Row="6" TextColor="Gray">
+                                <Label.Text>
+                                    <MultiBinding StringFormat="Fecha: {0:dd/MM/yyyy}">
+                                        <Binding Path="Fecha" />
+                                    </MultiBinding>
+                                </Label.Text>
+                            </Label>
+
+                            <Label Grid.Row="7" TextColor="Gray">
+                                <Label.Text>
+                                    <MultiBinding StringFormat="Forma de Pago: {0}">
+                                        <Binding Path="FormaPago" />
+                                    </MultiBinding>
+                                </Label.Text>
+                            </Label>
+
+                            <Label Grid.Row="8" TextColor="Green" FontAttributes="Bold">
+                                <Label.Text>
+                                    <MultiBinding StringFormat="Total a pagar: ${0:N2}">
+                                        <Binding Path="Total" />
+                                    </MultiBinding>
+                                </Label.Text>
+                            </Label>
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>

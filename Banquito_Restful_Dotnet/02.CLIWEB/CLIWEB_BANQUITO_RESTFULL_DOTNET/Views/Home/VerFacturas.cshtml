@@ -1,0 +1,152 @@
+﻿@model List<CLIWEB_BANQUITO_RESTFULL_DOTNET.Controllers.HomeController.Factura>
+
+@{
+    ViewBag.Title = "Ver Facturas";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #121212;
+            color: white;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #000;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+
+        .empresa-info {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid white;
+            padding-bottom: 10px;
+        }
+
+            .empresa-info h2, .empresa-info p {
+                margin: 5px 0;
+            }
+
+        .factura {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid lightgray;
+            border-radius: 5px;
+            background-color: #222;
+        }
+
+        .factura-header {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            border-bottom: 1px solid white;
+            padding-bottom: 5px;
+        }
+
+        .factura-content {
+            padding: 10px 0;
+        }
+
+            .factura-content div {
+                margin: 5px 0;
+            }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .total {
+            font-weight: bold;
+            color: green;
+            text-align: right;
+            font-size: 18px;
+        }
+
+        .busqueda {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+            .busqueda input {
+                padding: 8px;
+                width: 80%;
+                border-radius: 5px;
+                border: 1px solid gray;
+            }
+    </style>
+    <script>
+        function filtrarFacturas() {
+            var input = document.getElementById("buscarCedula").value.toLowerCase();
+            var facturas = document.getElementsByClassName("factura");
+
+            for (var i = 0; i < facturas.length; i++) {
+                var cedula = facturas[i].getElementsByClassName("cedula")[0].innerText;
+                if (cedula.includes(input)) {
+                    facturas[i].style.display = "block";
+                } else {
+                    facturas[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="empresa-info">
+            <h2>EMPRESA BANQUITO</h2>
+            <p>RUC: 1234567890</p>
+            <p>Dirección: Av. Principal, Sangolquí, Ecuador</p>
+            <p>Teléfono: +593 999 999 999</p>
+            <p>Email: contacto@banquito.com</p>
+        </div>
+
+        <div class="busqueda">
+            <input type="text" id="buscarCedula" placeholder="Buscar por cédula..." onkeyup="filtrarFacturas()">
+        </div>
+
+        @foreach (var factura in Model)
+        {
+            <div class="factura">
+                <div class="factura-header">FACTURA N° @factura.IdFactura</div>
+                <div class="factura-content">
+                    <div><strong>Cliente:</strong> @factura.NombreCliente</div>
+                    <div class="cedula"><strong>Cédula:</strong> @factura.Cedula</div>
+                    <div><strong>Dirección:</strong> Sangolquí</div>
+                    <div><strong>Teléfono:</strong> 0987058451</div>
+                    <div><strong>Cantidad:</strong> @factura.Cantidad</div>
+                    <div>
+                        <strong>Productos:</strong>
+                        @{
+                            string[] productos = { "Samsung", "Infinix", "Oppo", "Samsung", "Xiaomi" };
+                            string productosMostrados = string.Join(", ", productos.Take(factura.Cantidad));
+                        }
+                        @productosMostrados
+                    </div>
+                    <div class="grid">
+                        <div><strong>Fecha:</strong> @factura.Fecha.ToString("dd/MM/yyyy")</div>
+                        <div style="text-align: right;"><strong>Forma de Pago:</strong> @factura.FormaPago</div>
+                    </div>
+                    <div class="grid">
+                        <div><strong>Total a Pagar:</strong></div>
+                        <div class="total">$@factura.Total.ToString("N2")</div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</body>
+</html>

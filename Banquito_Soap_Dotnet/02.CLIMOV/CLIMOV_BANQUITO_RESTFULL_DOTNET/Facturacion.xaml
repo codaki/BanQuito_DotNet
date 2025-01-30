@@ -1,0 +1,73 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CLIMOV_BANQUITO_RESTFULL_DOTNET.Facturacion"
+             Title="Facturación">
+    <ScrollView>
+        <VerticalStackLayout Padding="20">
+            <Label 
+                Text="Filtrar por marca"
+                FontSize="Medium"
+                Margin="0,10,0,5" />
+
+            <!-- Picker para filtrar por marca -->
+            <Picker x:Name="MarcaPicker"
+                    SelectedIndexChanged="OnMarcaSelected"
+                    Margin="0,0,0,10">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>TODOS LOS TELÉFONOS</x:String>
+                        <x:String>SAMSUNG</x:String>
+                        <x:String>XIAOMI</x:String>
+                        <x:String>INFINIX</x:String>
+                        <x:String>OPPO</x:String>
+                        <x:String>REDMI</x:String>
+                        <x:String>APPLE</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+
+            <Label 
+                Text="Teléfonos disponibles"
+                FontSize="Medium"
+                Margin="0,10,0,10" />
+
+            <CollectionView x:Name="CollectionViewTelefonos">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame BorderColor="LightGray" Padding="10" Margin="5" CornerRadius="8">
+                            <Grid ColumnDefinitions="*, Auto">
+                                <VerticalStackLayout Grid.Column="0">
+                                    <Image Source="{Binding FotoImage}" WidthRequest="100" HeightRequest="100" Aspect="AspectFill"/>
+                                    <Label Text="{Binding NOMBRE}" FontSize="Medium" />
+                                    <Label Text="{Binding PRECIO, StringFormat='Precio: ${0:F2}'}" FontSize="Small" />
+                                </VerticalStackLayout>
+                                <Button Grid.Column="1" 
+                                    Text="Agregar 🛒"
+                                    CommandParameter="{Binding .}"
+                                    Clicked="OnAgregarAlCarritoClicked"
+                                    TextColor="White"
+                                    BackgroundColor="Green"
+                                    FontSize="14"
+                                    CornerRadius="8"
+                                    Margin="5,0,0,0"
+                                    HeightRequest="40"
+                                    VerticalOptions="Center">
+                                    <Button.Shadow>
+                                        <Shadow Brush="#22000000"
+                                                Offset="0,2"
+                                                Radius="4"/>
+                                    </Button.Shadow>
+                                </Button>
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Button 
+                Text="Ver Carrito"
+                Clicked="OnVerCarritoClicked"
+                Margin="0,10,0,10"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

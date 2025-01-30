@@ -1,0 +1,106 @@
+﻿<Window x:Class="CLIESC_EUREKABANK.Vista.CatalogoView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CLIESC_EUREKABANK.Vista"
+        mc:Ignorable="d"
+        Background="#2B2B2B"
+        Title="CatalogoView" Height="620" Width="450">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="240"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row ="0"
+                   Text="Catalogo de telefonos"
+                   Foreground="White"
+                   FontSize="15"
+                   HorizontalAlignment="Center"
+                   Margin="0,10"/>
+        <StackPanel Grid.Row="1">
+            <Label Content="Id Telefono:"
+                   Foreground="White"
+                   Margin="60,0"/>
+            <TextBox Name="IdTelefonoTextBox" Margin="60,0"/>
+            <Label Content="Nombre telefono:"
+                   Foreground="White"
+                   Margin="60,0"/>
+            <TextBox Name="NombreTelefonoTextBox" Margin="60,0"/>
+            <Label Content="Precio:"
+                   Foreground="White"
+                   Margin="60,0"/>
+            <TextBox Name="PrecioTextBox" Margin="60,0"/>
+            <Label Content="Seleccionar Imagen:" Foreground="White" Margin="60,10"/>
+            <Button Name="SeleccionarImagenButton" Content="Seleccionar Imagen" Width="150" Margin="60,0" Click="SeleccionarImagenButton_Click"/>
+            <Label Name="ImagenSeleccionadaLabel" Foreground="White" Margin="60,5"/>
+        </StackPanel>
+        
+        
+        <StackPanel 
+            Grid.Row="2"
+            Orientation="Horizontal"
+            HorizontalAlignment="Center">
+            <Button 
+                Name="AgregarButton"
+                Width="70"
+                Height="30"
+                Margin="20,0"
+                Background="#008001"
+                Foreground="White"
+                Style="{DynamicResource RoundedButton}"
+                Content="Agregar"
+                Click="AgregarButton_Click"/>
+            <Button 
+                Name="EliminarButton"
+                Width="70"
+                Height="30"
+                Margin="20,0"
+                Background="#FE0000"
+                Foreground="White"
+                Style="{DynamicResource RoundedButton}"
+                Content="Eliminar"
+                Click="EliminarButton_Click"/>
+            <Button 
+                Name="ActualizarButton"
+                Width="70"
+                Height="30"
+                Margin="20,0"
+                Background="#0000FE"
+                Foreground="White"
+                Style="{DynamicResource RoundedButton}"
+                Content="Actualizar"
+                Click="ActualizarButton_Click"/>
+        </StackPanel>
+        
+        <Label x:Name="MensajeLabel" Grid.Row="3" Foreground="White" HorizontalAlignment="Center" FontSize="12"/>
+        <Button 
+            Grid.Row="4"
+            Name="ActualizarTablaButton"
+            Width="70"
+            Height="30"
+            Margin="20,0"
+            Background="#0000FE"
+            Foreground="White"
+            Style="{DynamicResource RoundedButton}"
+            Content="Actualizar"
+            Click="ActualizarTablaButton_Click"/>
+        <DataGrid 
+            x:Name="TelefonoDataGrid"
+            Grid.Row="5"
+            Margin="20,5"
+            AutoGenerateColumns="False"
+            CanUserAddRows="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding COD_TEL}" Width="*" />
+                <DataGridTextColumn Header="NOMBRE" Binding="{Binding NOMBRE}" Width="*" />
+                <DataGridTextColumn Header="PRECIO" Binding="{Binding PRECIO}" Width="*" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+    </Grid>
+</Window>
